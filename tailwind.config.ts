@@ -11,6 +11,9 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primary: "#D32F2F", // Red primary theme color
+        secondary: "#C62828", // Darker red
+        accent: "#FFCDD2", // Lighter red for accents
       },
     },
   },
