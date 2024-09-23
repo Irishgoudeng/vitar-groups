@@ -21,7 +21,7 @@ const Dashboard: React.FC = () => {
         <CalibrationCards />
       </div>
 
-      <div className="xl:mt-8">
+      <div className="">
         <ListPagination />
       </div>
     </main>

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const initialusers = [
+const initialUsers = [
   {
     id: "1",
     name: "John Doe",
@@ -11,7 +11,8 @@ const initialusers = [
     phone: "123-456-7890",
     address: "123 Elm Street",
     username: "johndoe",
-    password: "hashedpassword1", // Example hashed password
+    password: "hashedpassword1",
+    role: "Technician",
   },
   {
     id: "2",
@@ -21,6 +22,7 @@ const initialusers = [
     address: "456 Oak Avenue",
     username: "janesmith",
     password: "hashedpassword2",
+    role: "Admin",
   },
   {
     id: "3",
@@ -30,13 +32,15 @@ const initialusers = [
     address: "789 Pine Road",
     username: "emilyjohnson",
     password: "hashedpassword3",
+    role: "Salesman",
   },
 ];
 
 const UsersPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
-  const [users] = useState(initialusers);
+  const [selectedRole, setSelectedRole] = useState("all");
+  const [users] = useState(initialUsers);
 
   const router = useRouter();
 
@@ -56,14 +60,20 @@ const UsersPage: React.FC = () => {
     setSelectedFilter(e.target.value);
   };
 
-  const filteredusers = users.filter((user) => {
+  const handleRoleFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedRole(e.target.value);
+  };
+
+  const filteredUsers = users.filter((user) => {
     const matchesSearch = user.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
-    const matchesFilter =
+    const matchesLocation =
       selectedFilter === "all" ||
       user.address.toLowerCase().includes(selectedFilter.toLowerCase());
-    return matchesSearch && matchesFilter;
+    const matchesRole = selectedRole === "all" || user.role === selectedRole;
+
+    return matchesSearch && matchesLocation && matchesRole;
   });
 
   return (
@@ -72,7 +82,7 @@ const UsersPage: React.FC = () => {
         Users
       </h1>
       <div className="mb-6 flex flex-col lg:flex-row lg:justify-between lg:items-center">
-        <div className="flex gap-4 mb-4 lg:mb-0">
+        <div className="flex flex-col lg:flex-row gap-4 mb-4 lg:mb-0">
           <input
             type="text"
             value={searchTerm}
@@ -90,6 +100,16 @@ const UsersPage: React.FC = () => {
             <option value="Oak Avenue">Oak Avenue</option>
             <option value="Pine Road">Pine Road</option>
           </select>
+          <select
+            value={selectedRole}
+            onChange={handleRoleFilter}
+            className="px-4 py-2 border border-gray-300 rounded-lg text-black"
+          >
+            <option value="all">All Roles</option>
+            <option value="Technician">Technician</option>
+            <option value="Admin">Admin</option>
+            <option value="Salesman">Salesman</option>
+          </select>
         </div>
         <button
           onClick={handleAdd}
@@ -101,8 +121,8 @@ const UsersPage: React.FC = () => {
 
       {/* User List */}
       <div className="block lg:hidden">
-        {filteredusers.length > 0 ? (
-          filteredusers.map((user) => (
+        {filteredUsers.length > 0 ? (
+          filteredUsers.map((user) => (
             <div
               key={user.id}
               className="border rounded-lg p-4 mb-4 bg-white shadow"
@@ -112,9 +132,10 @@ const UsersPage: React.FC = () => {
               <p className="text-gray-600">Email: {user.email}</p>
               <p className="text-gray-600">Phone: {user.phone}</p>
               <p className="text-gray-600">Address: {user.address}</p>
+              <p className="text-gray-600">Role: {user.role}</p>
               <button
                 onClick={() => handleEdit(user.id)}
-                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                className="mt-2 w-full px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
               >
                 Edit
               </button>
@@ -146,13 +167,16 @@ const UsersPage: React.FC = () => {
                 Address
               </th>
               <th scope="col" className="px-6 py-3">
+                Role
+              </th>
+              <th scope="col" className="px-6 py-3">
                 Actions
               </th>
             </tr>
           </thead>
           <tbody>
-            {filteredusers.length > 0 ? (
-              filteredusers.map((user) => (
+            {filteredUsers.length > 0 ? (
+              filteredUsers.map((user) => (
                 <tr key={user.id} className="border-b border-gray-200">
                   <td className="px-6 py-4 font-medium text-gray-900">
                     {user.name}
@@ -161,6 +185,7 @@ const UsersPage: React.FC = () => {
                   <td className="px-6 py-4 text-gray-600">{user.email}</td>
                   <td className="px-6 py-4 text-gray-600">{user.phone}</td>
                   <td className="px-6 py-4 text-gray-600">{user.address}</td>
+                  <td className="px-6 py-4 text-gray-600">{user.role}</td>
                   <td className="px-6 py-4">
                     <button
                       onClick={() => handleEdit(user.id)}
@@ -173,7 +198,7 @@ const UsersPage: React.FC = () => {
               ))
             ) : (
               <tr>
-                <td colSpan={6} className="px-6 py-4 text-center text-gray-500">
+                <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
                   No users found
                 </td>
               </tr>

@@ -133,9 +133,11 @@ const Sidebar: React.FC = () => {
             </li>
             <li>
               <a
-                href="/jobs"
+                href="/dashboard/jobs"
                 className={`block py-2 px-4 rounded hover:bg-red-400 ${
-                  pathname === "/jobs" ? "bg-red-400 text-white" : ""
+                  pathname.includes("/dashboard/jobs")
+                    ? "bg-red-400 text-white"
+                    : ""
                 }`}
               >
                 Jobs

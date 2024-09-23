@@ -4,7 +4,7 @@ import React from "react";
 const CalibrationCards: React.FC = () => {
   return (
     <div className="p-4 sm:p-6 lg:p-8 xl:mx-16">
-      <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4  md:grid-cols-2 lg:grid-cols-2">
         {/* Card 1 */}
         <div className="w-full p-4 sm:p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100">
           <h1 className="mb-1 text-base sm:text-lg font-bold tracking-tight text-gray-900">

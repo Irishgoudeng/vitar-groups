@@ -81,67 +81,80 @@ const CalendarActivitiesPage: React.FC = () => {
   };
 
   return (
-    <div className="p-4  lg:p-12 bg-white h-screen text-black">
-      <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 my-8">
+    <div className="p-4 lg:p-12 bg-white h-screen text-black">
+      <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 my-4">
         Calendar of Activities
       </h1>
 
       {/* Month and Year Navigation */}
-      <div className="flex flex-col lg:flex-row justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-6">
         <button
           onClick={handlePrevMonth}
-          className="px-4 py-2 bg-red-500 text-white rounded shadow-md"
+          className="px-4 py-2 bg-red-500 text-white rounded-lg text-sm sm:text-base shadow-md hover:bg-red-600 transition"
         >
           Previous
         </button>
-        <div className="text-lg lg:text-xl font-semibold">
+        <div className="text-lg font-semibold text-gray-800">
           {dayjs(new Date(currentYear, currentMonth)).format("MMMM YYYY")}
         </div>
         <button
           onClick={handleNextMonth}
-          className="px-4 py-2 bg-red-500 text-white rounded shadow-md"
+          className="px-4 py-2 bg-red-500 text-white rounded-lg text-sm sm:text-base shadow-md hover:bg-red-600 transition"
         >
           Next
         </button>
       </div>
 
+      {/* Calendar */}
       <div className="grid grid-cols-7 gap-2 mb-4">
         {daysInWeek.map((day) => (
-          <div key={day} className="text-center font-bold text-gray-700">
+          <div
+            key={day}
+            className="text-center font-bold text-gray-700 text-xs sm:text-sm"
+          >
             {day}
           </div>
         ))}
+
         {calendar.map((week, weekIndex) => (
           <React.Fragment key={weekIndex}>
             {week.map((date) => {
               const dateString = date.format("YYYY-MM-DD");
               const isWeekend = date.day() === 0 || date.day() === 6;
+              const isToday = date.isSame(dayjs(), "day");
               return (
                 <div
                   key={dateString}
-                  onClick={() => handleDateClick(date)} // Open modal on click
-                  className={`border border-gray-300 p-2 relative flex flex-col justify-between h-32 cursor-pointer ${
+                  onClick={() => handleDateClick(date)}
+                  className={`border border-gray-300 p-2 relative flex flex-col justify-between h-20 sm:h-24 lg:h-32 cursor-pointer transition hover:bg-gray-100 ${
                     isWeekend ? "bg-red-100" : "bg-white"
-                  }`}
+                  } ${isToday ? "border-red-500" : ""}`}
                 >
                   <div
-                    className={`font-semibold ${
+                    className={`font-semibold text-xs sm:text-sm ${
                       isWeekend ? "text-red-600" : "text-black"
                     }`}
                   >
                     {date.date()}
                   </div>
+                  {/* Show number of activities */}
                   {activities[dateString] && (
-                    <div className="absolute top-0 right-0 bg-red-200 rounded-full px-1 text-xs">
+                    <div className="absolute top-1 right-1 bg-red-200 rounded-full px-1 text-xs sm:text-sm">
                       {activities[dateString].length}
                     </div>
                   )}
-                  {activities[dateString]?.map((activity, index) => (
-                    <div key={index} className="text-xs text-gray-600">
-                      <span className="font-medium">{activity.time}:</span>{" "}
-                      {activity.description}
-                    </div>
-                  ))}
+                  {/* Show activities */}
+                  <div className="overflow-hidden">
+                    {activities[dateString]?.map((activity, index) => (
+                      <div
+                        key={index}
+                        className="text-xs sm:text-sm text-gray-600 truncate"
+                      >
+                        <span className="font-medium">{activity.time}:</span>{" "}
+                        {activity.description}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               );
             })}
