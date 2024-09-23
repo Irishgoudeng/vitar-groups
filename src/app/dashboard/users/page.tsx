@@ -1,0 +1,163 @@
+"use client";
+
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+
+const initialusers = [
+  {
+    id: "1",
+    name: "John Doe",
+    email: "john@example.com",
+    phone: "123-456-7890",
+    address: "123 Elm Street",
+    username: "johndoe",
+    password: "hashedpassword1", // Example hashed password
+  },
+  {
+    id: "2",
+    name: "Jane Smith",
+    email: "jane@example.com",
+    phone: "234-567-8901",
+    address: "456 Oak Avenue",
+    username: "janesmith",
+    password: "hashedpassword2",
+  },
+  {
+    id: "3",
+    name: "Emily Johnson",
+    email: "emily@example.com",
+    phone: "345-678-9012",
+    address: "789 Pine Road",
+    username: "emilyjohnson",
+    password: "hashedpassword3",
+  },
+];
+
+const UsersPage: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState("all");
+  const [users] = useState(initialusers);
+
+  const router = useRouter();
+
+  const handleEdit = (userId: string) => {
+    router.push(`/dashboard/users/${userId}/edit`);
+  };
+
+  const handleAdd = () => {
+    router.push(`/dashboard/users/add`);
+  };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedFilter(e.target.value);
+  };
+
+  const filteredusers = users.filter((user) => {
+    const matchesSearch = user.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesFilter =
+      selectedFilter === "all" ||
+      user.address.toLowerCase().includes(selectedFilter.toLowerCase());
+    return matchesSearch && matchesFilter;
+  });
+
+  return (
+    <div className="p-6 lg:p-12 bg-white min-h-screen">
+      {/* Page Header */}
+      <h1 className="text-3xl font-semibold text-gray-900 mb-4 py-8 lg:mb-0">
+        Users
+      </h1>
+      <div className="mb-6 flex flex-col lg:flex-row lg:justify-between lg:items-center">
+        <div className="flex gap-4 mb-4 lg:mb-0">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearch}
+            placeholder="Search by name..."
+            className="px-4 py-2 border border-gray-300 rounded-lg text-black"
+          />
+          <select
+            value={selectedFilter}
+            onChange={handleFilter}
+            className="px-4 py-2 border border-gray-300 rounded-lg text-black"
+          >
+            <option value="all">All Locations</option>
+            <option value="Elm Street">Elm Street</option>
+            <option value="Oak Avenue">Oak Avenue</option>
+            <option value="Pine Road">Pine Road</option>
+          </select>
+        </div>
+        <button
+          onClick={handleAdd}
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+        >
+          Add user
+        </button>
+      </div>
+
+      {/* user List */}
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm text-left text-gray-600 bg-white border border-gray-200 rounded-lg shadow-md">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-100">
+            <tr>
+              <th scope="col" className="px-6 py-3">
+                Name
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Username
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Email
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Phone
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Address
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredusers.length > 0 ? (
+              filteredusers.map((user) => (
+                <tr key={user.id} className="border-b border-gray-200">
+                  <td className="px-6 py-4 font-medium text-gray-900">
+                    {user.name}
+                  </td>
+                  <td className="px-6 py-4 text-gray-600">{user.username}</td>
+                  <td className="px-6 py-4 text-gray-600">{user.email}</td>
+                  <td className="px-6 py-4 text-gray-600">{user.phone}</td>
+                  <td className="px-6 py-4 text-gray-600">{user.address}</td>
+                  <td className="px-6 py-4">
+                    <button
+                      onClick={() => handleEdit(user.id)}
+                      className="text-blue-500 hover:underline"
+                    >
+                      Edit
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} className="px-6 py-4 text-center text-gray-500">
+                  No users found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+export default UsersPage;

@@ -65,12 +65,14 @@ const UserProfile = () => {
           </div>
 
           {/* Edit Profile button with redirect */}
-          <button
-            onClick={handleEditProfile} // Attach the click handler here
-            className="mt-6 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 items-end justify-end"
-          >
-            Edit Profile
-          </button>
+          <div className="flex items-center justify-center">
+            <button
+              onClick={handleEditProfile} // Attach the click handler here
+              className="mt-6 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
+            >
+              Edit Profile
+            </button>
+          </div>
         </div>
       </div>
     </div>

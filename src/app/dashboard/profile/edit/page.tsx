@@ -54,7 +54,9 @@ const EditProfile: React.FC<EditProfileProps> = ({ userProfile }) => {
       <div className="container mx-auto py-12">
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-semibold text-black">Edit Profile</h1>
+            <h1 className="text-2xl font-semibold text-black w-40">
+              Edit Profile
+            </h1>
             <Breadcrumb
               titles={[
                 { name: "Dashboard", href: "/dashboard" },
