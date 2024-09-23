@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-
 import Breadcrumb from "@/app/components/common/Breadcrumb";
 import Image from "next/image";
 import profPic from "../../../../../public/assets/prof-pic.png";
@@ -16,22 +15,17 @@ interface UserProfile {
   instagram: string;
 }
 
-interface EditProfileProps {
-  userProfile: UserProfile;
-}
-
-const EditProfile: React.FC<EditProfileProps> = ({ userProfile }) => {
-  // Initialize form data with the provided user profile data
+const EditProfile: React.FC = () => {
+  // Initialize form data (you can replace this with fetched data)
   const [formData, setFormData] = useState<UserProfile>({
-    name: userProfile?.name || "Vince PXC",
-    role: userProfile?.role || "Technician",
-    about: userProfile?.about || "",
-    twitter: userProfile?.twitter || "",
-    facebook: userProfile?.facebook || "",
-    instagram: userProfile?.instagram || "",
+    name: "Vince PXC",
+    role: "Technician",
+    about: "",
+    twitter: "",
+    facebook: "",
+    instagram: "",
   });
 
-  // Function to handle form input changes
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -42,10 +36,9 @@ const EditProfile: React.FC<EditProfileProps> = ({ userProfile }) => {
     }));
   };
 
-  // Function to handle form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Here, you can add logic to update the user profile in the database
+    // Logic to update user profile
     console.log("Form submitted:", formData);
   };
 
