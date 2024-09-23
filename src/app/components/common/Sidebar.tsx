@@ -74,7 +74,9 @@ const Sidebar: React.FC = () => {
               <a
                 href="/dashboard/calendar"
                 className={`block py-2 px-4 rounded hover:bg-red-400 ${
-                  pathname === "/calendar" ? "bg-red-400 text-white" : ""
+                  pathname === "/dashboard/calendar"
+                    ? "bg-red-400 text-white"
+                    : ""
                 }`}
               >
                 Calendar
@@ -84,7 +86,9 @@ const Sidebar: React.FC = () => {
               <a
                 href="/dashboard/users"
                 className={`block py-2 px-4 rounded hover:bg-red-400 ${
-                  pathname === "/users" ? "bg-red-400 text-white" : ""
+                  pathname.includes("/dashboard/users")
+                    ? "bg-red-400 text-white"
+                    : ""
                 }`}
               >
                 Users
@@ -94,7 +98,7 @@ const Sidebar: React.FC = () => {
               <a
                 href="/dashboard/customers"
                 className={`block py-2 px-4 rounded hover:bg-red-400 ${
-                  pathname === "/dashboard/customers"
+                  pathname.includes("/dashboard/customers")
                     ? "bg-red-400 text-white"
                     : ""
                 }`}
