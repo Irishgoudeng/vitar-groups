@@ -7,7 +7,7 @@ interface ModalProps {
   onSubmit: (time: string, description: string) => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
+const CalendarModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
   const [time, setTime] = React.useState("");
   const [description, setDescription] = React.useState("");
 
@@ -62,4 +62,4 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
   );
 };
 
-export default Modal;
+export default CalendarModal;
