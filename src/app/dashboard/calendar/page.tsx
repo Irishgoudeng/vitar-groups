@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import dayjs from "dayjs";
-import CalendarModal from "../../components/CalendarModal/page"; // Import your Modal component
+import CalendarModal from "../../components/CalendarModal/Modal"; // Import your Modal component
 
 const daysInWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 

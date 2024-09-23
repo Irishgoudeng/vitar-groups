@@ -1,4 +1,4 @@
-// Modal.tsx
+// src/app/components/CalendarModal/Modal.tsx
 import React from "react";
 
 interface ModalProps {
