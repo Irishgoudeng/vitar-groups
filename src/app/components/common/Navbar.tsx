@@ -5,7 +5,7 @@ import profilePic from "../../../../public/assets/prof-pic.png"; // Replace with
 
 const Navbar: React.FC = () => {
   return (
-    <nav className="bg-red-500 p-4 flex justify-end items-center">
+    <nav className="bg-red-500 p-4 justify-end items-center hidden lg:flex">
       <div className="relative">
         <Image
           src={profilePic}

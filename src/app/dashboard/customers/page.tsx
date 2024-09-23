@@ -88,7 +88,7 @@ const CustomersPage: React.FC = () => {
           </select>
         </div>
         <button
-          onClick={() => handleAdd()}
+          onClick={handleAdd}
           className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
         >
           Add Customer
@@ -96,58 +96,34 @@ const CustomersPage: React.FC = () => {
       </div>
 
       {/* Customer List */}
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm text-left text-gray-600 bg-white border border-gray-200 rounded-lg shadow-md">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-100">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                Name
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Email
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Phone
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Address
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredCustomers.length > 0 ? (
-              filteredCustomers.map((customer) => (
-                <tr key={customer.id} className="border-b border-gray-200">
-                  <td className="px-6 py-4 font-medium text-gray-900">
-                    {customer.name}
-                  </td>
-                  <td className="px-6 py-4 text-gray-600">{customer.email}</td>
-                  <td className="px-6 py-4 text-gray-600">{customer.phone}</td>
-                  <td className="px-6 py-4 text-gray-600">
-                    {customer.address}
-                  </td>
-                  <td className="px-6 py-4">
-                    <button
-                      onClick={() => handleEdit(customer.id)}
-                      className="text-blue-500 hover:underline"
-                    >
-                      Edit
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
-                  No customers found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+        {filteredCustomers.length > 0 ? (
+          filteredCustomers.map((customer) => (
+            <div
+              key={customer.id}
+              className="bg-white border rounded-lg shadow-md p-4"
+            >
+              <h2 className="font-medium text-lg text-gray-900">
+                {customer.name}
+              </h2>
+              <p className="text-gray-600">{customer.email}</p>
+              <p className="text-gray-600">{customer.phone}</p>
+              <p className="text-gray-600">{customer.address}</p>
+              <div className="mt-4">
+                <button
+                  onClick={() => handleEdit(customer.id)}
+                  className="text-blue-500 hover:underline"
+                >
+                  Edit
+                </button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="col-span-full text-center text-gray-500">
+            No customers found
+          </div>
+        )}
       </div>
     </div>
   );

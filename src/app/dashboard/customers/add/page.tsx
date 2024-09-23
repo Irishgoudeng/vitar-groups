@@ -25,7 +25,7 @@ const AddCustomer: React.FC = () => {
     console.log("New customer added:", newCustomer);
 
     // Redirect to customers list after saving
-    router.push("/customers");
+    router.push("/dashboard/customers");
   };
 
   return (

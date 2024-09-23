@@ -1,36 +1,56 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import logo from "../../../../public/assets/vitar-logo.png";
 import { usePathname } from "next/navigation";
+
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
+  const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   const [isDataDropdownOpen, setIsDataDropdownOpen] = useState(false);
-
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleDataDropdown = () => {
     setIsDataDropdownOpen(!isDataDropdownOpen);
   };
 
-  // Function to toggle Profile dropdown
   const toggleProfileDropdown = () => {
     setIsProfileDropdownOpen(!isProfileDropdownOpen);
   };
 
-  // Function to toggle sidebar visibility
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  // Close sidebar when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node)
+      ) {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    if (isSidebarOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isSidebarOpen]);
+
   return (
-    <div className="bg-white">
+    <div className="relative bg-white">
       {/* Burger Menu Icon for mobile */}
-      <div className="lg:hidden p-4 bg-white">
+      <div className="block lg:hidden p-4 bg-white">
         <button onClick={toggleSidebar} className="text-gray-700">
           <svg
             className="w-6 h-6"
@@ -50,7 +70,12 @@ const Sidebar: React.FC = () => {
       </div>
 
       {/* Sidebar */}
-      <div className={`lg:block ${isSidebarOpen ? "block" : "hidden"}`}>
+      <div
+        ref={sidebarRef}
+        className={`fixed top-0 left-0 h-full w-64 z-50 bg-white transition-transform transform ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:relative lg:block lg:translate-x-0`}
+      >
         <div className="w-64 min-h-screen bg-white text-gray-700 p-4">
           {/* Logo */}
           <div className="mb-6 pl-6">

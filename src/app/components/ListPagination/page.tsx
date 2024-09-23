@@ -3,7 +3,7 @@ import React from "react";
 
 const ListPagination: React.FC = () => {
   return (
-    <div className="relative overflow-x-auto shadow-md rounded-xl xl:mx-24 xl:py-4">
+    <div className=" overflow-x-auto shadow-md rounded-xl xl:mx-24 xl:py-4">
       <div className="overflow-x-auto">
         <table className="min-w-full text-sm text-left rtl:text-right text-gray-600 dark:text-gray-300">
           <caption className="p-4 text-lg font-semibold text-left rtl:text-right text-gray-800 bg-gray-200">

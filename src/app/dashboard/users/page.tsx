@@ -68,7 +68,6 @@ const UsersPage: React.FC = () => {
 
   return (
     <div className="p-6 lg:p-12 bg-white min-h-screen">
-      {/* Page Header */}
       <h1 className="text-3xl font-semibold text-gray-900 mb-4 py-8 lg:mb-0">
         Users
       </h1>
@@ -96,12 +95,38 @@ const UsersPage: React.FC = () => {
           onClick={handleAdd}
           className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
         >
-          Add user
+          Add User
         </button>
       </div>
 
-      {/* user List */}
-      <div className="overflow-x-auto">
+      {/* User List */}
+      <div className="block lg:hidden">
+        {filteredusers.length > 0 ? (
+          filteredusers.map((user) => (
+            <div
+              key={user.id}
+              className="border rounded-lg p-4 mb-4 bg-white shadow"
+            >
+              <h2 className="text-xl font-semibold">{user.name}</h2>
+              <p className="text-gray-600">Username: {user.username}</p>
+              <p className="text-gray-600">Email: {user.email}</p>
+              <p className="text-gray-600">Phone: {user.phone}</p>
+              <p className="text-gray-600">Address: {user.address}</p>
+              <button
+                onClick={() => handleEdit(user.id)}
+                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Edit
+              </button>
+            </div>
+          ))
+        ) : (
+          <div className="text-center text-gray-500">No users found</div>
+        )}
+      </div>
+
+      {/* Table for larger screens */}
+      <div className="hidden lg:block overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-600 bg-white border border-gray-200 rounded-lg shadow-md">
           <thead className="text-xs text-gray-700 uppercase bg-gray-100">
             <tr>
