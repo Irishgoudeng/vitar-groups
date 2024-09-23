@@ -25,13 +25,12 @@ const initialCustomers = [
     phone: "345-678-9012",
     address: "789 Pine Road",
   },
-  // Add more customers here
 ];
 
 const CustomersPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
-  const [customers] = useState(initialCustomers); // Using static initialCustomers
+  const [customers] = useState(initialCustomers);
 
   const router = useRouter();
 
@@ -62,8 +61,7 @@ const CustomersPage: React.FC = () => {
   });
 
   return (
-    <div className="p-6 lg:p-12 bg-white min-h-screen">
-      {/* Page Header */}
+    <div className="p-6 lg:p-12 bg-white h-screen overflow-x-hidden">
       <h1 className="text-3xl font-semibold text-gray-900 mb-4 py-8 lg:mb-0">
         Customers
       </h1>
@@ -95,35 +93,84 @@ const CustomersPage: React.FC = () => {
         </button>
       </div>
 
-      {/* Customer List */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+      {/* Customer List as Cards */}
+      <div className="block lg:hidden">
         {filteredCustomers.length > 0 ? (
           filteredCustomers.map((customer) => (
             <div
               key={customer.id}
-              className="bg-white border rounded-lg shadow-md p-4"
+              className="border rounded-lg p-4 mb-4 bg-white shadow"
             >
-              <h2 className="font-medium text-lg text-gray-900">
-                {customer.name}
-              </h2>
-              <p className="text-gray-600">{customer.email}</p>
-              <p className="text-gray-600">{customer.phone}</p>
-              <p className="text-gray-600">{customer.address}</p>
-              <div className="mt-4">
-                <button
-                  onClick={() => handleEdit(customer.id)}
-                  className="text-blue-500 hover:underline"
-                >
-                  Edit
-                </button>
-              </div>
+              <h2 className="text-xl font-semibold">{customer.name}</h2>
+              <p className="text-gray-600">Email: {customer.email}</p>
+              <p className="text-gray-600">Phone: {customer.phone}</p>
+              <p className="text-gray-600">Address: {customer.address}</p>
+              <button
+                onClick={() => handleEdit(customer.id)}
+                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Edit
+              </button>
             </div>
           ))
         ) : (
-          <div className="col-span-full text-center text-gray-500">
-            No customers found
-          </div>
+          <div className="text-center text-gray-500">No customers found</div>
         )}
+      </div>
+
+      {/* Table for larger screens */}
+      <div className="hidden lg:block overflow-x-auto">
+        <table className="w-full text-sm text-left text-gray-600 bg-white border border-gray-200 rounded-lg shadow-md">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-100">
+            <tr>
+              <th scope="col" className="px-6 py-3">
+                Name
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Email
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Phone
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Address
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredCustomers.length > 0 ? (
+              filteredCustomers.map((customer) => (
+                <tr key={customer.id} className="border-b border-gray-200">
+                  <td className="px-6 py-4 font-medium text-gray-900">
+                    {customer.name}
+                  </td>
+                  <td className="px-6 py-4 text-gray-600">{customer.email}</td>
+                  <td className="px-6 py-4 text-gray-600">{customer.phone}</td>
+                  <td className="px-6 py-4 text-gray-600">
+                    {customer.address}
+                  </td>
+                  <td className="px-6 py-4">
+                    <button
+                      onClick={() => handleEdit(customer.id)}
+                      className="text-blue-500 hover:underline"
+                    >
+                      Edit
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
+                  No customers found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

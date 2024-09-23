@@ -5,7 +5,7 @@ import ListPagination from "../components/ListPagination/page";
 
 const Dashboard: React.FC = () => {
   return (
-    <main className="bg-gray-50 min-h-screen">
+    <main className="bg-gray-50 h-screen">
       <div className="px-12 py-8">
         <h1 className="text-2xl font-bold  text-black">
           Welcome Back, PXC Dev!

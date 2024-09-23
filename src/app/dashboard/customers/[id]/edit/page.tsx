@@ -63,7 +63,7 @@ const EditCustomer: React.FC = () => {
   };
 
   return (
-    <div className="p-6 lg:p-12 bg-white min-h-screen">
+    <div className="p-6 lg:p-12 bg-white h-screen">
       <h1 className="text-3xl font-semibold text-gray-900 mb-4">
         Edit Customer
       </h1>

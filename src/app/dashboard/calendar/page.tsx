@@ -81,7 +81,7 @@ const CalendarActivitiesPage: React.FC = () => {
   };
 
   return (
-    <div className="p-4  lg:p-12 bg-white min-h-screen text-black">
+    <div className="p-4  lg:p-12 bg-white h-screen text-black">
       <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 my-8">
         Calendar of Activities
       </h1>

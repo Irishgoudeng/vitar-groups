@@ -16,7 +16,7 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div className="bg-gray-100 h-screen flex items-center justify-center">
       <div className="container mx-auto py-12">
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between mb-6">

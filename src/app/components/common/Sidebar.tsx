@@ -50,7 +50,7 @@ const Sidebar: React.FC = () => {
   return (
     <div className="relative bg-white">
       {/* Burger Menu Icon for mobile */}
-      <div className="block lg:hidden p-4 bg-white">
+      <div className="block lg:hidden p-4 bg-transparent">
         <button onClick={toggleSidebar} className="text-gray-700">
           <svg
             className="w-6 h-6"
@@ -74,9 +74,9 @@ const Sidebar: React.FC = () => {
         ref={sidebarRef}
         className={`fixed top-0 left-0 h-full w-64 z-50 bg-white transition-transform transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:relative lg:block lg:translate-x-0`}
+        }  lg:sticky  lg:block lg:translate-x-0`}
       >
-        <div className="w-64 min-h-screen bg-white text-gray-700 p-4">
+        <div className="w-64 h-screen bg-white text-gray-700 p-4">
           {/* Logo */}
           <div className="mb-6 pl-6">
             <Image src={logo} alt="Dashboard Logo" width={150} height={50} />

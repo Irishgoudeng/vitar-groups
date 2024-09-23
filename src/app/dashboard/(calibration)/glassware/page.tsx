@@ -12,7 +12,7 @@ const VolumetricGlassware = () => {
           { name: "Calibration Data (Volumetric Glassware)" },
         ]}
       />
-      <main className="bg-gray-50 min-h-screen xl:px-4">
+      <main className="bg-gray-50 h-screen xl:px-4">
         <div className="ml-4 pt-8 xl:ml-4 xl:pt-12 ">
           <h1 className="text-md xl:text-4xl font-bold text-black">
             Calibration Data (Volumetric Glassware)
