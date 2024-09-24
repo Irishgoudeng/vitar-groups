@@ -86,7 +86,7 @@ const Sidebar: React.FC = () => {
         } lg:block lg:translate-x-0`}
       >
         <div className="w-64 h-full bg-white text-gray-700 p-4">
-          <div className="mb-6 pl-6">
+          <div className="mb-12 pl-6">
             <Image src={logo} alt="Dashboard Logo" width={150} height={50} />
           </div>
 
