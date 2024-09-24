@@ -5,8 +5,14 @@ export default function Login() {
   return (
     <div className="min-h-screen flex">
       {/* Left Side - Image/Video Section, completely hidden on mobile */}
-      <div className="hidden lg:block w-1/2 h-full bg-red-500">
-        {/* Optional: Add an image or video here */}
+      <div className="hidden lg:block w-1/2 h-full relative">
+        <Image
+          src="/assets/login-banner.jpg" // Ensure the image path is correct
+          alt="Vitar Logo"
+          layout="fill" // This ensures the image covers the entire container
+          objectFit="cover" // Ensures the image covers the area without being distorted
+          priority
+        />
       </div>
 
       {/* Right Side - Login Form */}
@@ -37,7 +43,7 @@ export default function Login() {
               </label>
               <input
                 type="text"
-                id="email"
+                id="companyCode"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-red-500"
                 placeholder="Enter your company code"
               />

@@ -1,350 +1,284 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-
-// Sample list of technicians and customers for demonstration
-const technicians = [
-  { id: 1, name: "John Doe" },
-  { id: 2, name: "Jane Smith" },
-  { id: 3, name: "Emily Johnson" },
-];
-
-const customers = [
-  { id: 1, name: "Customer A" },
-  { id: 2, name: "Customer B" },
-  { id: 3, name: "Customer C" },
-];
-
-const equipmentOptions = [
-  { id: 1, name: "Hammer" },
-  { id: 2, name: "Screwdriver" },
-  { id: 3, name: "Drill" },
-];
+import Button from "../../../components/common/Button";
 
 const AddJobPage: React.FC = () => {
-  const [jobId, setJobId] = useState(1000);
-  const [customer, setCustomer] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
-  const [location, setLocation] = useState({
-    city: "",
-    province: "",
-    street: "",
-    locationName: "",
-    isGated: false,
-    notes: "",
-  });
-  const [technician, setTechnician] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [estimatedTime, setEstimatedTime] = useState("");
-  const [selectedEquipment, setSelectedEquipment] = useState<string[]>([]);
-  const [priority, setPriority] = useState("Low");
-  const router = useRouter();
+  const [activeTab, setActiveTab] = useState("summary");
 
-  const handleCustomerChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedCustomer = customers.find(
-      (c) => c.id === parseInt(e.target.value)
-    );
-    setCustomer(selectedCustomer ? selectedCustomer.name : "");
-  };
+  // Reusable input component
+  const InputField: React.FC<{
+    id: string;
+    label: string;
+    placeholder?: string;
+  }> = ({ id, label, placeholder }) => (
+    <div className="mb-6">
+      <label
+        htmlFor={id}
+        className="block mb-2 text-sm font-bold text-gray-900"
+      >
+        {label}
+      </label>
+      <input
+        type="text"
+        id={id}
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        placeholder={placeholder}
+        required
+      />
+    </div>
+  );
 
-  const handleContactNumberChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setContactNumber(e.target.value);
-  };
+  const DisabledField: React.FC<{
+    id: string;
+    label: string;
+    placeholder?: string;
+  }> = ({ id, label, placeholder }) => (
+    <div className="mb-6">
+      <label
+        htmlFor={id}
+        className="block mb-2 text-sm font-bold text-gray-900"
+      >
+        {label}
+      </label>
+      <input
+        type="text"
+        id={id}
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        placeholder={placeholder}
+        required
+        disabled
+      />
+    </div>
+  );
 
-  const handleLocationChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setLocation((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // const handleGatedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setLocation((prev) => ({ ...prev, isGated: e.target.checked }));
-  // };
-
-  const handleTechnicianChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setTechnician(e.target.value);
-  };
-
-  const handleDateChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    setter: React.Dispatch<React.SetStateAction<string>>
-  ) => {
-    setter(e.target.value);
-  };
-
-  const handleEquipmentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const equipmentId = e.target.value;
-    if (selectedEquipment.includes(equipmentId)) {
-      setSelectedEquipment(
-        selectedEquipment.filter((id) => id !== equipmentId)
-      );
-    } else {
-      setSelectedEquipment([...selectedEquipment, equipmentId]);
-    }
-  };
-
-  const handlePriorityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setPriority(e.target.value);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log({
-      jobId,
-      customer,
-      contactNumber,
-      location,
-      technician,
-      startDate,
-      endDate,
-      estimatedTime,
-      equipment: selectedEquipment,
-      priority,
-    });
-    setJobId((prev) => prev + 1);
-    router.push("/dashboard/jobs");
-  };
+  const equipmentOptions = [
+    { id: "1", name: "Thermometer" },
+    { id: "2", name: "Heat Gun" },
+    { id: "3", name: "Thermal Camera" },
+    { id: "4", name: "Temperature Sensor" },
+  ];
 
   return (
     <div className="p-6 lg:p-12 bg-white min-h-screen">
       <h1 className="text-3xl font-semibold text-gray-900 mb-8">Add Job</h1>
-      <div className="space-y-6 text-black">
-        <div>
-          <label
-            htmlFor="jobId"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Job ID (Auto-incremented)
-          </label>
-          <input
-            type="text"
-            id="jobId"
-            value={jobId}
-            readOnly
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
-          />
-        </div>
 
-        <div>
-          <label
-            htmlFor="customer"
-            className="block text-sm font-medium text-gray-700"
+      {/* Tab Navigation */}
+      <div className="flex space-x-4 mb-8">
+        {["summary", "scheduling"].map((tab) => (
+          <span
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`cursor-pointer px-4 py-2 border ${
+              activeTab === tab
+                ? "border-red-600 text-red-600 font-semibold underline"
+                : "border-transparent text-gray-700"
+            }`}
           >
-            Customer
-          </label>
-          <select
-            id="customer"
-            value={customer}
-            onChange={handleCustomerChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg"
-          >
-            <option value="">Select Customer</option>
-            {customers.map((cust) => (
-              <option key={cust.id} value={cust.id}>
-                {cust.name}
-              </option>
-            ))}
-          </select>
-        </div>
+            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+          </span>
+        ))}
+      </div>
 
-        <div>
-          <label
-            htmlFor="contactNumber"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Contact Number
-          </label>
-          <input
-            type="text"
-            id="contactNumber"
-            value={contactNumber}
-            onChange={handleContactNumberChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg"
-          />
-        </div>
+      <form className="space-y-6 text-black bg-gray-200 p-8 m-4">
+        {activeTab === "summary" && (
+          <div>
+            <h2 className="text-2xl font-medium mb-6">Job Summary</h2>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Location
-          </label>
-          <input
-            type="text"
-            name="city"
-            placeholder="City"
-            value={location.city}
-            onChange={handleLocationChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg mb-2"
-          />
-          <input
-            type="text"
-            name="province"
-            placeholder="Province"
-            value={location.province}
-            onChange={handleLocationChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg mb-2"
-          />
-          <input
-            type="text"
-            name="street"
-            placeholder="Street"
-            value={location.street}
-            onChange={handleLocationChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg mb-2"
-          />
-          <input
-            type="text"
-            name="locationName"
-            placeholder="Location Name"
-            value={location.locationName}
-            onChange={handleLocationChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg mb-2"
-          />
-          <div className="flex items-center mb-2">
-            <input
-              type="checkbox"
-              id="isGated"
-              checked={location.isGated}
-              onChange={(e) =>
-                setLocation({ ...location, isGated: e.target.checked })
-              }
-              className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+            {/* Search Customer Name Input */}
+            <InputField
+              id="customer_name"
+              label="Search Customer Name"
+              placeholder="ex. 1001-250"
             />
-            <label htmlFor="isGated" className="ml-2 text-sm text-gray-700">
-              Is this a gated community?
-            </label>
+
+            <hr className="my-6" />
+            <h2 className="text-xl font-medium mt-8 mb-4">Primary Contact</h2>
+            <p className="mb-4">Details about the customer</p>
+
+            {/* Contact Details Inputs */}
+            <InputField
+              id="contact_name"
+              label="Contact Name"
+              placeholder="Contact Name"
+            />
+
+            {/* Map for multiple contact fields */}
+            <div className="grid grid-cols-3 gap-6 mb-6">
+              <InputField
+                id="first_name"
+                label="First Name"
+                placeholder="ex. Contact Details"
+              />
+              <InputField
+                id="middle_name"
+                label="Middle Name"
+                placeholder="ex. Contact Details"
+              />
+              <InputField
+                id="last_name"
+                label="Last Name"
+                placeholder="ex. Contact Details"
+              />
+            </div>
+
+            <div className="grid grid-cols-3 gap-6 mb-6">
+              <InputField
+                id="phone_number"
+                label="Phone Number"
+                placeholder="ex. Contact Details"
+              />
+              <InputField
+                id="mobile_phone"
+                label="Mobile Phone"
+                placeholder="ex. Contact Details"
+              />
+              <InputField
+                id="email_address"
+                label="Email Address"
+                placeholder="ex. Contact Details"
+              />
+            </div>
+
+            <hr className="my-6" />
+            <h2 className="text-xl font-medium mt-8 mb-4">Job Location</h2>
+            <p className="mb-4">Details about Job Location</p>
+
+            <InputField id="location_id" label="Location ID" placeholder="" />
+
+            <div className="grid grid-cols-3 gap-6 mb-6">
+              <DisabledField
+                id="location_name"
+                label="Location Name"
+                placeholder="ex. "
+              />
+              <DisabledField id="street_no" label="Street No." placeholder="" />
+              <DisabledField
+                id="street_address"
+                label="Street Address"
+                placeholder=""
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-6 mb-6">
+              <DisabledField id="block_no" label="Block" placeholder="ex. " />
+              <DisabledField
+                id="building_no"
+                label="Building No."
+                placeholder="ex. "
+              />
+            </div>
+
+            <div className="grid grid-col-2 xl:grid-cols-4 gap-6 mb-6">
+              <DisabledField id="country" label="Country" placeholder="ex. " />
+              <DisabledField
+                id="state_province"
+                label="State/Province"
+                placeholder="ex. "
+              />
+              <DisabledField id="city" label="City" placeholder="ex. " />
+              <DisabledField
+                id="zip_postal"
+                label="Zip/Postal Code"
+                placeholder="ex. "
+              />
+            </div>
+
+            <div className="mb-6">
+              <label
+                htmlFor="equipment"
+                className="block mb-2 text-sm font-bold text-gray-900"
+              >
+                Select Equipment
+              </label>
+              <select
+                id="equipment"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                multiple
+                required
+              >
+                {equipmentOptions.map((equipment) => (
+                  <option key={equipment.id} value={equipment.id}>
+                    {equipment.name}
+                  </option>
+                ))}
+              </select>
+              <p className="text-sm text-gray-500 mt-1">
+                Hold down Ctrl (Windows) or Command (Mac) to select multiple
+                options.
+              </p>
+            </div>
           </div>
-          <textarea
-            name="notes"
-            placeholder="Notes"
-            value={location.notes}
-            onChange={handleLocationChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg"
-          />
-        </div>
+        )}
 
-        <div>
-          <label
-            htmlFor="technician"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Technician
-          </label>
-          <select
-            id="technician"
-            value={technician}
-            onChange={handleTechnicianChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg"
-          >
-            <option value="">Select Technician</option>
-            {technicians.map((tech) => (
-              <option key={tech.id} value={tech.name}>
-                {tech.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        {activeTab === "scheduling" && (
+          <div>
+            <h2 className="text-2xl font-medium mb-6">Job Scheduling</h2>
 
-        <div>
-          <label
-            htmlFor="startDate"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Start Date
-          </label>
-          <input
-            type="datetime-local"
-            id="startDate"
-            value={startDate}
-            onChange={(e) => handleDateChange(e, setStartDate)}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="endDate"
-            className="block text-sm font-medium text-gray-700"
-          >
-            End Date
-          </label>
-          <input
-            type="datetime-local"
-            id="endDate"
-            value={endDate}
-            onChange={(e) => handleDateChange(e, setEndDate)}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="estimatedTime"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Estimated Time
-          </label>
-          <input
-            type="text"
-            id="estimatedTime"
-            value={estimatedTime}
-            onChange={(e) => setEstimatedTime(e.target.value)}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Job Priority
-          </label>
-          <select
-            value={priority}
-            onChange={handlePriorityChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg"
-          >
-            <option value="Low">Low</option>
-            <option value="High">High</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Equipment Needed (Select multiple)
-          </label>
-          <div className="mt-1 grid grid-cols-1 gap-4 md:grid-cols-2">
-            {equipmentOptions.map((equip) => (
-              <div key={equip.id} className="flex items-center">
-                <input
-                  type="checkbox"
-                  id={`equipment-${equip.id}`}
-                  value={equip.name}
-                  onChange={handleEquipmentChange}
-                  className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-                />
+            {/* Start Date and Time */}
+            <div className="grid grid-cols-2 gap-6 mb-6 w-1/2">
+              <div>
                 <label
-                  htmlFor={`equipment-${equip.id}`}
-                  className="ml-2 text-sm text-gray-700"
+                  htmlFor="start_date"
+                  className="block mb-2 text-sm font-bold text-gray-900"
                 >
-                  {equip.name}
+                  Start Date and Time
                 </label>
+                <input
+                  type="datetime-local"
+                  id="start_date"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  required
+                />
               </div>
-            ))}
-          </div>
-        </div>
 
-        <div>
-          <button
-            type="submit"
-            className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-            onClick={handleSubmit}
-          >
-            Add Job
-          </button>
-        </div>
+              {/* End Date and Time */}
+              <div>
+                <label
+                  htmlFor="end_date"
+                  className="block mb-2 text-sm font-bold text-gray-900"
+                >
+                  End Date and Time
+                </label>
+                <input
+                  type="datetime-local"
+                  id="end_date"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="w-1/6">
+              {/* Estimated Time */}
+              <InputField
+                id="estimated_time"
+                label="Estimated Time (Hours)"
+                placeholder="e.g., 3 hours"
+              />
+            </div>
+            {/* Job Priority */}
+            <div className="mb-6 w-1/6">
+              <label
+                htmlFor="job_priority"
+                className="block mb-2 text-sm font-bold text-gray-900"
+              >
+                Job Priority
+              </label>
+              <select
+                id="job_priority"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                required
+              >
+                <option value="high">High</option>
+                <option value="low">Low</option>
+              </select>
+            </div>
+          </div>
+        )}
+      </form>
+      <div className="flex justify-end items-end">
+        <Button />
       </div>
     </div>
   );

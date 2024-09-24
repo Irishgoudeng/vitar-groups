@@ -5,12 +5,12 @@ import Navbar from "../components/common/Navbar";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex">
+    <div className="">
       {/* Sidebar */}
       <Sidebar />
 
       {/* Main Content Area */}
-      <div className="flex-1 ">
+      <div className=" xl:ml-64">
         {/* Navbar */}
         <Navbar />
 
