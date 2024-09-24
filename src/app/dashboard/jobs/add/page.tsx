@@ -12,10 +12,10 @@ const AddJobPage: React.FC = () => {
     label: string;
     placeholder?: string;
   }> = ({ id, label, placeholder }) => (
-    <div className="mb-6">
+    <div className="mb-4 xl:mb-6">
       <label
         htmlFor={id}
-        className="block mb-2 text-sm font-bold text-gray-900"
+        className="block mb-2 text-xs xl:text-sm font-bold text-gray-900"
       >
         {label}
       </label>
@@ -34,10 +34,10 @@ const AddJobPage: React.FC = () => {
     label: string;
     placeholder?: string;
   }> = ({ id, label, placeholder }) => (
-    <div className="mb-6">
+    <div className="xl:mb-6">
       <label
         htmlFor={id}
-        className="block mb-2 text-sm font-bold text-gray-900 "
+        className="block mb-2 text-xs xl:text-sm font-bold text-gray-900 "
       >
         {label}
       </label>
@@ -83,7 +83,7 @@ const AddJobPage: React.FC = () => {
       <form className="space-y-6 text-black bg-gray-200 p-8 m-4">
         {activeTab === "summary" && (
           <div>
-            <h2 className="text-2xl font-bold mb-6 ">Job Summary</h2>
+            <h2 className="text-2xl font-bold mb-4 xl:mb-6 ">Job Summary</h2>
 
             {/* Search Customer Name Input */}
             <InputField
@@ -92,9 +92,13 @@ const AddJobPage: React.FC = () => {
               placeholder="ex. 1001-250"
             />
 
-            <hr className="my-6" />
-            <h2 className="text-xl font-bold mt-8 mb-4">Primary Contact</h2>
-            <p className="mb-4">Details about the customer</p>
+            <hr className="my-4" />
+            <h2 className="text-xl font-bold xl:mt-8 xl:mb-4">
+              Primary Contact
+            </h2>
+            <p className="mb-4 text-xs xl:text-sm">
+              Details about the customer
+            </p>
 
             {/* Contact Details Inputs */}
             <InputField
@@ -216,7 +220,7 @@ const AddJobPage: React.FC = () => {
             <h2 className="text-2xl font-bold mb-6">Job Scheduling</h2>
 
             {/* Start Date and Time */}
-            <div className="grid grid-cols-2 gap-6 mb-6 w-1/2">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6 w-1/2">
               <div>
                 <label
                   htmlFor="start_date"

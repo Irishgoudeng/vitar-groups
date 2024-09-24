@@ -59,8 +59,8 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <div className="bg-white">
-      <div className="block lg:hidden p-4 bg-transparent">
+    <div className="bg-transparent fixed">
+      <div className="block lg:hidden p-4 bg-transparent   ">
         <button onClick={toggleSidebar} className="text-red-700">
           <svg
             className="w-6 h-6"
@@ -81,7 +81,7 @@ const Sidebar: React.FC = () => {
 
       <div
         ref={sidebarRef}
-        className={`fixed top-0 left-0 h-full w-64 bg-white transition-transform transform ${
+        className={`fixed top-0 left-0 h-full w-64 bg-transparent transition-transform transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:block lg:translate-x-0`}
       >

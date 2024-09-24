@@ -15,7 +15,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         <Navbar />
 
         {/* Main Page Content */}
-        <main className=" ">{children}</main>
+        <main className=" bg-white p-12 xl:p-0">{children}</main>
       </div>
     </div>
   );
