@@ -15,7 +15,7 @@ const GlasswareInput = () => {
   }
 
   return (
-    <div className="p-4">
+    <div className="p-4 min-h-screen">
       <form>
         {/* Description text Area */}
         <div className="">

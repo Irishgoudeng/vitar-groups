@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image"; // Import Image component
 
 const JobDetailsPage: React.FC = () => {
   const router = useRouter();
@@ -17,7 +18,7 @@ const JobDetailsPage: React.FC = () => {
     dateTime: "2024-09-23T10:30:00",
     status: "Completed",
     notes: "Job completed successfully. All checks passed.",
-    images: ["image1.jpg", "image2.jpg"], // Add image paths
+    images: ["/assets/vitar-logo.png", "/assets/vitar-logo.png"], // Adjusted paths for next/image
     location: { lat: 34.0522, lng: -118.2437 }, // Sample coordinates
     schedule: {
       startTime: "2024-09-23T10:00:00",
@@ -74,9 +75,7 @@ const JobDetailsPage: React.FC = () => {
           <div className="bg-gray-100 p-4 rounded-lg shadow mb-4">
             <h2 className="text-xl font-semibold mb-2">Job Location</h2>
             <div className="h-64 w-full bg-gray-300">
-              {" "}
               {/* Replace with map component */}
-              {/* Integrate a map here using a library like react-leaflet or Google Maps */}
               <p className="text-gray-600">
                 Map showing location: Latitude {job.location.lat}, Longitude{" "}
                 {job.location.lng}
@@ -91,10 +90,12 @@ const JobDetailsPage: React.FC = () => {
             <h2 className="text-xl font-semibold mb-2">Job Images</h2>
             <div className="grid grid-cols-2 gap-4">
               {job.images.map((image, index) => (
-                <img
+                <Image
                   key={index}
                   src={image}
                   alt={`Job Image ${index + 1}`}
+                  width={400} // Set your desired width
+                  height={300} // Set your desired height
                   className="h-32 object-cover rounded"
                 />
               ))}
@@ -116,7 +117,7 @@ const JobDetailsPage: React.FC = () => {
         <button
           onClick={() => setActiveTab("summary")}
           className={`px-4 py-2 rounded ${
-            activeTab === "summary" ? "bg-blue-500 text-white" : "bg-gray-200"
+            activeTab === "summary" ? "bg-red-500 text-white" : "bg-gray-200"
           }`}
         >
           Job Summary
@@ -124,9 +125,7 @@ const JobDetailsPage: React.FC = () => {
         <button
           onClick={() => setActiveTab("scheduling")}
           className={`px-4 py-2 rounded ${
-            activeTab === "scheduling"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200"
+            activeTab === "scheduling" ? "bg-red-500 text-white" : "bg-gray-200"
           }`}
         >
           Job Scheduling
@@ -134,7 +133,7 @@ const JobDetailsPage: React.FC = () => {
         <button
           onClick={() => setActiveTab("location")}
           className={`px-4 py-2 rounded ${
-            activeTab === "location" ? "bg-blue-500 text-white" : "bg-gray-200"
+            activeTab === "location" ? "bg-red-500 text-white" : "bg-gray-200"
           }`}
         >
           Job Location
@@ -142,7 +141,7 @@ const JobDetailsPage: React.FC = () => {
         <button
           onClick={() => setActiveTab("images")}
           className={`px-4 py-2 rounded ${
-            activeTab === "images" ? "bg-blue-500 text-white" : "bg-gray-200"
+            activeTab === "images" ? "bg-red-500 text-white" : "bg-gray-200"
           }`}
         >
           Job Images
@@ -155,7 +154,7 @@ const JobDetailsPage: React.FC = () => {
       <div className="mt-6">
         <button
           onClick={() => router.push("/dashboard/jobs")}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
         >
           Back to Jobs
         </button>

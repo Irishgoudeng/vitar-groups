@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const initialJobs = [
@@ -8,7 +8,7 @@ const initialJobs = [
     id: "1",
     technician: "Tech A",
     customer: "John Doe",
-    equipment: ["Drill", "Hammer"],
+    equipment: ["Thermocouple", "Heat Gun"],
     dateTime: "2023-09-23 10:00 AM",
     status: "Confirmed",
     type: "Site",
@@ -18,7 +18,7 @@ const initialJobs = [
     id: "2",
     technician: "Tech B",
     customer: "Jane Smith",
-    equipment: ["Excavator", "Wrench"],
+    equipment: ["Infrared Thermometer", "Thermal Camera"],
     dateTime: "2023-09-23 01:00 PM",
     status: "Pending",
     type: "Sub-Contract",
@@ -28,7 +28,7 @@ const initialJobs = [
     id: "3",
     technician: "Tech C",
     customer: "Emily Johnson",
-    equipment: ["Backhoe"],
+    equipment: ["Heat Exchanger", "Thermal Insulation"],
     dateTime: "2023-09-24 09:30 AM",
     status: "Confirmed",
     type: "Lab",
@@ -38,7 +38,7 @@ const initialJobs = [
     id: "4",
     technician: "Tech D",
     customer: "Michael Brown",
-    equipment: ["Cement Mixer"],
+    equipment: ["Boiler", "Heating Element"],
     dateTime: "2023-09-25 11:00 AM",
     status: "Confirmed",
     type: "Site",
@@ -47,12 +47,17 @@ const initialJobs = [
 ];
 
 const jobTypes = ["All", "Site", "Sub-Contract", "Lab"];
+
 const JobsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedType, setSelectedType] = useState("All");
   const [showPriority, setShowPriority] = useState(false);
-  const [jobs] = useState(initialJobs);
+  const [jobs, setJobs] = useState(initialJobs);
   const router = useRouter();
+
+  useEffect(() => {
+    setJobs(initialJobs); // Set jobs after the first render
+  }, []);
 
   const handleEdit = (jobId: string) => {
     router.push(`/dashboard/jobs/${jobId}/edit`);
@@ -112,7 +117,7 @@ const JobsPage: React.FC = () => {
             </option>
           ))}
         </select>
-        <label className="flex items-center ml-4">
+        <label className="flex items-center ml-4 text-black">
           <input
             type="checkbox"
             checked={showPriority}
@@ -184,43 +189,41 @@ const JobsPage: React.FC = () => {
                   <td className="px-6 py-4">{job.dateTime}</td>
                   <td className="px-6 py-4">{job.status}</td>
                   <td className="px-6 py-4">{job.type}</td>
-                  <td className="px-6 py-4">{job.priority ? "Yes" : "No"}</td>
+                  <td className="px-6 py-4">{job.priority ? "High" : "Low"}</td>
                   <td className="px-6 py-4 relative">
-                    <td className="px-6 py-4 relative">
+                    <button
+                      className="text-gray-500 hover:underline"
+                      onClick={(e) => {
+                        const dropdown = e.currentTarget.nextElementSibling;
+                        if (dropdown) {
+                          dropdown.classList.toggle("hidden");
+                        }
+                      }}
+                    >
+                      &#x2022;&#x2022;&#x2022; {/* Three dots */}
+                    </button>
+                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg hidden z-10">
                       <button
-                        className="text-gray-500 hover:underline"
-                        onClick={(e) => {
-                          const dropdown = e.currentTarget.nextElementSibling;
-                          if (dropdown) {
-                            dropdown.classList.toggle("hidden");
-                          }
-                        }}
+                        onClick={() => handleEdit(job.id)}
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
                       >
-                        &#x2022;&#x2022;&#x2022; {/* Three dots */}
+                        Edit
                       </button>
-                      <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg hidden z-10">
-                        <button
-                          onClick={() => handleEdit(job.id)}
-                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() =>
-                            router.push(`/dashboard/jobs/${job.id}/view`)
-                          }
-                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
-                        >
-                          View Details
-                        </button>
-                        <button
-                          onClick={() => router.push(`/dashboard/jobs`)}
-                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
-                        >
-                          Cancel Job
-                        </button>
-                      </div>
-                    </td>
+                      <button
+                        onClick={() =>
+                          router.push(`/dashboard/jobs/${job.id}/view`)
+                        }
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
+                      >
+                        View Details
+                      </button>
+                      <button
+                        onClick={() => router.push(`/dashboard/jobs`)}
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
+                      >
+                        Cancel Job
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))

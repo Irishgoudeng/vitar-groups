@@ -38,6 +38,17 @@ const CustomersPage: React.FC = () => {
     router.push(`/dashboard/customers/${customerId}/edit`);
   };
 
+  const handleDelete = (customerId: string) => {
+    const confirmDelete = confirm(
+      "Are you sure you want to delete this customer?"
+    );
+    if (confirmDelete) {
+      console.log(`Customer with ID ${customerId} deleted`);
+
+      router.push(`/dashboard/customers`);
+    }
+  };
+
   const handleAdd = () => {
     router.push(`/dashboard/customers/add`);
   };
@@ -119,6 +130,7 @@ const CustomersPage: React.FC = () => {
       </div>
 
       {/* Table for larger screens */}
+      {/* Table for larger screens */}
       <div className="hidden lg:block overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-600 bg-white border border-gray-200 rounded-lg shadow-md">
           <thead className="text-xs text-gray-700 uppercase bg-gray-100">
@@ -152,13 +164,32 @@ const CustomersPage: React.FC = () => {
                   <td className="px-6 py-4 text-gray-600">
                     {customer.address}
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 relative">
                     <button
-                      onClick={() => handleEdit(customer.id)}
-                      className="text-blue-500 hover:underline"
+                      className="text-gray-500 hover:underline"
+                      onClick={(e) => {
+                        const dropdown = e.currentTarget.nextElementSibling;
+                        if (dropdown) {
+                          dropdown.classList.toggle("hidden");
+                        }
+                      }}
                     >
-                      Edit
+                      &#x2022;&#x2022;&#x2022; {/* Three dots */}
                     </button>
+                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg hidden z-10">
+                      <button
+                        onClick={() => handleEdit(customer.id)}
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(customer.id)}
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
+                      >
+                        Delete Customer
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
