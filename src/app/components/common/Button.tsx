@@ -2,6 +2,7 @@ import React from "react";
 
 interface ButtonProps {
   label: string;
+  type: string;
   onClick?: () => void; // Optional onClick handler
 }
 

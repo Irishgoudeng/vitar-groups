@@ -60,12 +60,12 @@ const AddJobPage: React.FC = () => {
   ];
 
   return (
-    <div className="p-6 lg:p-12 bg-white min-h-screen">
+    <div className="p-4 xl:p-12 bg-white min-h-screen">
       <h1 className="text-3xl font-semibold text-gray-900 mb-8">Add Job</h1>
 
       {/* Tab Navigation */}
       <div className="flex space-x-4 mb-8">
-        {["summary", "scheduling"].map((tab) => (
+        {["summary", "location", "scheduling"].map((tab) => (
           <span
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -82,7 +82,7 @@ const AddJobPage: React.FC = () => {
 
       <form className="space-y-6 text-black bg-gray-200 p-8 m-4">
         {activeTab === "summary" && (
-          <div>
+          <div className="">
             <h2 className="text-2xl font-bold mb-4 xl:mb-6 ">Job Summary</h2>
 
             {/* Search Customer Name Input */}
@@ -108,7 +108,7 @@ const AddJobPage: React.FC = () => {
             />
 
             {/* Map for multiple contact fields */}
-            <div className="grid grid-cols-3 gap-6 mb-6">
+            <div className="grid grid-cols-3 gap-4 xl:gap-6 mb-6">
               <InputField
                 id="first_name"
                 label="First Name"
@@ -126,7 +126,7 @@ const AddJobPage: React.FC = () => {
               />
             </div>
 
-            <div className="grid grid-cols-3 gap-6 mb-6">
+            <div className="grid grid-cols-3 gap-4 xl:gap-6 mb-6">
               <InputField
                 id="phone_number"
                 label="Phone Number"
@@ -145,12 +145,41 @@ const AddJobPage: React.FC = () => {
             </div>
 
             <hr className="my-6" />
-            <h2 className="text-xl font-bold mt-8 mb-4">Job Location</h2>
+            <div className="mb-6">
+              <label
+                htmlFor="equipment"
+                className="block mb-2 text-sm font-bold text-gray-900"
+              >
+                Select Equipment
+              </label>
+              <select
+                id="equipment"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                multiple
+                required
+              >
+                {equipmentOptions.map((equipment) => (
+                  <option key={equipment.id} value={equipment.id}>
+                    {equipment.name}
+                  </option>
+                ))}
+              </select>
+              <p className="text-sm text-gray-500 mt-1">
+                Hold down Ctrl (Windows) or Command (Mac) to select multiple
+                options.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "location" && (
+          <div>
+            <h2 className="text-2xl font-bold mt-8 mb-4">Job Location</h2>
             <p className="mb-4">Details about Job Location</p>
 
             <InputField id="location_id" label="Location ID" placeholder="" />
 
-            <div className="grid grid-cols-3 gap-6 mb-6">
+            <div className="grid grid-cols-3 gap-4 xl:gap-6 mb-6">
               <DisabledField
                 id="location_name"
                 label="Location Name"
@@ -187,31 +216,6 @@ const AddJobPage: React.FC = () => {
                 placeholder="ex. "
               />
             </div>
-
-            <div className="mb-6">
-              <label
-                htmlFor="equipment"
-                className="block mb-2 text-sm font-bold text-gray-900"
-              >
-                Select Equipment
-              </label>
-              <select
-                id="equipment"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                multiple
-                required
-              >
-                {equipmentOptions.map((equipment) => (
-                  <option key={equipment.id} value={equipment.id}>
-                    {equipment.name}
-                  </option>
-                ))}
-              </select>
-              <p className="text-sm text-gray-500 mt-1">
-                Hold down Ctrl (Windows) or Command (Mac) to select multiple
-                options.
-              </p>
-            </div>
           </div>
         )}
 
@@ -220,7 +224,7 @@ const AddJobPage: React.FC = () => {
             <h2 className="text-2xl font-bold mb-6">Job Scheduling</h2>
 
             {/* Start Date and Time */}
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6 w-1/2">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6 xl:w-1/2">
               <div>
                 <label
                   htmlFor="start_date"
@@ -253,7 +257,7 @@ const AddJobPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="w-1/6">
+            <div className="xl:w-1/6 w-1/2 mb-4">
               {/* Estimated Time */}
               <DisabledField
                 id="estimated_time"
@@ -262,10 +266,10 @@ const AddJobPage: React.FC = () => {
               />
             </div>
             {/* Job Priority */}
-            <div className="mb-6 w-1/6">
+            <div className="mb-6 xl:w-1/6">
               <label
                 htmlFor="job_priority"
-                className="block mb-2 text-sm font-bold text-gray-900"
+                className="block mb-2 text-xs xl:text-sm font-bold text-gray-900"
               >
                 Job Priority
               </label>
@@ -274,16 +278,21 @@ const AddJobPage: React.FC = () => {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 required
               >
-                <option value="high">High</option>
-                <option value="low">Low</option>
+                <option value="High">High</option>
+                <option value="Low">Low</option>
               </select>
             </div>
           </div>
         )}
+
+        {/* Submit Button */}
+        <div className="flex justify-end items-end">
+          <Button
+            label={activeTab === "summary" || "location" ? "Next" : "Submit"}
+            type="button" // or whatever type you need
+          />
+        </div>
       </form>
-      <div className="flex justify-end items-end">
-        <Button label="Submit" />
-      </div>
     </div>
   );
 };
