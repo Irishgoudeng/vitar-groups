@@ -267,7 +267,7 @@ const Sidebar: React.FC = () => {
           </ul>
 
           {/* Profile Section */}
-          <div className="mt-6">
+          <div className="mt-6 block xl:hidden">
             <button
               onClick={toggleProfileDropdown}
               className="flex items-center py-2 px-4 rounded hover:bg-red-400"
@@ -302,7 +302,7 @@ const Sidebar: React.FC = () => {
               <ul className="ml-4 mt-2" onClick={handleDropdownClick}>
                 <li className="mb-2">
                   <Link
-                    href="/dashboard/edit-profile"
+                    href="/dashboard/profile/edit"
                     className={`block py-2 px-4 text-sm rounded hover:bg-red-400 ${
                       pathname === "/dashboard/edit-profile"
                         ? "bg-red-400 text-white"
@@ -314,7 +314,7 @@ const Sidebar: React.FC = () => {
                 </li>
                 <li className="mb-2">
                   <Link
-                    href="/dashboard/logout"
+                    href="/login"
                     className="block py-2 px-4 text-sm rounded hover:bg-red-400"
                   >
                     Logout
