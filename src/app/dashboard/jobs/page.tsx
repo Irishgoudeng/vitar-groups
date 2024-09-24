@@ -83,7 +83,7 @@ const JobsPage: React.FC = () => {
 
   return (
     <div className="p-4 md:p-6 lg:p-12 bg-white min-h-screen">
-      <h1 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4 py-4 md:py-8">
+      <h1 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4 py-4 ">
         Jobs
       </h1>
 

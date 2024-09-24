@@ -83,7 +83,7 @@ const AddJobPage: React.FC = () => {
       <form className="space-y-6 text-black bg-gray-200 p-8 m-4">
         {activeTab === "summary" && (
           <div>
-            <h2 className="text-2xl font-bold mb-6 font-bold">Job Summary</h2>
+            <h2 className="text-2xl font-bold mb-6 ">Job Summary</h2>
 
             {/* Search Customer Name Input */}
             <InputField
