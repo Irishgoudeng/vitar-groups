@@ -37,14 +37,14 @@ const AddJobPage: React.FC = () => {
     <div className="mb-6">
       <label
         htmlFor={id}
-        className="block mb-2 text-sm font-bold text-gray-900"
+        className="block mb-2 text-sm font-bold text-gray-900 "
       >
         {label}
       </label>
       <input
         type="text"
         id={id}
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        className="bg-gray-300 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
         placeholder={placeholder}
         required
         disabled
@@ -83,7 +83,7 @@ const AddJobPage: React.FC = () => {
       <form className="space-y-6 text-black bg-gray-200 p-8 m-4">
         {activeTab === "summary" && (
           <div>
-            <h2 className="text-2xl font-medium mb-6">Job Summary</h2>
+            <h2 className="text-2xl font-bold mb-6 font-bold">Job Summary</h2>
 
             {/* Search Customer Name Input */}
             <InputField
@@ -93,7 +93,7 @@ const AddJobPage: React.FC = () => {
             />
 
             <hr className="my-6" />
-            <h2 className="text-xl font-medium mt-8 mb-4">Primary Contact</h2>
+            <h2 className="text-xl font-bold mt-8 mb-4">Primary Contact</h2>
             <p className="mb-4">Details about the customer</p>
 
             {/* Contact Details Inputs */}
@@ -141,7 +141,7 @@ const AddJobPage: React.FC = () => {
             </div>
 
             <hr className="my-6" />
-            <h2 className="text-xl font-medium mt-8 mb-4">Job Location</h2>
+            <h2 className="text-xl font-bold mt-8 mb-4">Job Location</h2>
             <p className="mb-4">Details about Job Location</p>
 
             <InputField id="location_id" label="Location ID" placeholder="" />
@@ -213,7 +213,7 @@ const AddJobPage: React.FC = () => {
 
         {activeTab === "scheduling" && (
           <div>
-            <h2 className="text-2xl font-medium mb-6">Job Scheduling</h2>
+            <h2 className="text-2xl font-bold mb-6">Job Scheduling</h2>
 
             {/* Start Date and Time */}
             <div className="grid grid-cols-2 gap-6 mb-6 w-1/2">
@@ -251,7 +251,7 @@ const AddJobPage: React.FC = () => {
 
             <div className="w-1/6">
               {/* Estimated Time */}
-              <InputField
+              <DisabledField
                 id="estimated_time"
                 label="Estimated Time (Hours)"
                 placeholder="e.g., 3 hours"
@@ -278,7 +278,7 @@ const AddJobPage: React.FC = () => {
         )}
       </form>
       <div className="flex justify-end items-end">
-        <Button />
+        <Button label="Submit" />
       </div>
     </div>
   );
