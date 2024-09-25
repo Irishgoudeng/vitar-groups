@@ -1,9 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import AddCustomer from "@/app/components/Customers/AddCustomerModal";
+import EditCustomerModal from "@/app/components/Customers/EditCustomerModal";
+import { Customer } from "@/app/types/Customer"; // Make sure to import the Customer type
 
-const initialCustomers = [
+const initialCustomers: Customer[] = [
   {
     id: "1",
     name: "John Doe",
@@ -30,12 +33,24 @@ const initialCustomers = [
 const CustomersPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
-  const [customers] = useState(initialCustomers);
+  const [customers, setCustomers] = useState<Customer[]>(initialCustomers);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
+    null
+  );
 
+  const [dropdownOpen, setDropdownOpen] = useState<{ [key: string]: boolean }>(
+    {}
+  );
   const router = useRouter();
+  const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   const handleEdit = (customerId: string) => {
-    router.push(`/dashboard/customers/${customerId}/edit`);
+    const customerToEdit =
+      customers.find((customer) => customer.id === customerId) || null;
+    setSelectedCustomer(customerToEdit);
+    setIsEditModalOpen(true);
   };
 
   const handleDelete = (customerId: string) => {
@@ -43,14 +58,14 @@ const CustomersPage: React.FC = () => {
       "Are you sure you want to delete this customer?"
     );
     if (confirmDelete) {
+      setCustomers(customers.filter((customer) => customer.id !== customerId));
       console.log(`Customer with ID ${customerId} deleted`);
-
       router.push(`/dashboard/customers`);
     }
   };
 
   const handleAdd = () => {
-    router.push(`/dashboard/customers/add`);
+    setIsModalOpen(true);
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,6 +85,41 @@ const CustomersPage: React.FC = () => {
       customer.address.toLowerCase().includes(selectedFilter.toLowerCase());
     return matchesSearch && matchesFilter;
   });
+
+  const handleSave = (updatedCustomer: Customer) => {
+    setCustomers((prevCustomers) =>
+      prevCustomers.map((customer) =>
+        customer.id === updatedCustomer.id ? updatedCustomer : customer
+      )
+    );
+  };
+
+  const toggleDropdown = (customerId: string) => {
+    setDropdownOpen((prev) => ({
+      ...prev,
+      [customerId]: !prev[customerId],
+    }));
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      for (const id in dropdownRefs.current) {
+        if (
+          dropdownRefs.current[id] &&
+          dropdownOpen[id] &&
+          !dropdownRefs.current[id]?.contains(event.target as Node)
+        ) {
+          setDropdownOpen((prev) => ({ ...prev, [id]: false }));
+        }
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownOpen]);
 
   return (
     <div className="p-6 lg:p-12 bg-white h-screen overflow-x-hidden">
@@ -130,7 +180,6 @@ const CustomersPage: React.FC = () => {
       </div>
 
       {/* Table for larger screens */}
-      {/* Table for larger screens */}
       <div className="hidden lg:block overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-600 bg-white border border-gray-200 rounded-lg shadow-md">
           <thead className="text-xs text-gray-700 uppercase bg-gray-100">
@@ -167,16 +216,26 @@ const CustomersPage: React.FC = () => {
                   <td className="px-6 py-4 relative">
                     <button
                       className="text-gray-500 hover:underline"
-                      onClick={(e) => {
-                        const dropdown = e.currentTarget.nextElementSibling;
-                        if (dropdown) {
-                          dropdown.classList.toggle("hidden");
-                        }
-                      }}
+                      onClick={() => toggleDropdown(customer.id)}
                     >
                       &#x2022;&#x2022;&#x2022; {/* Three dots */}
                     </button>
-                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg hidden z-10">
+                    <div
+                      ref={(el) => {
+                        if (el) {
+                          dropdownRefs.current[customer.id] = el;
+                        } else {
+                          delete dropdownRefs.current[customer.id];
+                        }
+                      }}
+                      className={`absolute right-0 w-48 bg-white border border-gray-200 rounded shadow-lg ${
+                        dropdownOpen[customer.id] ? "block" : "hidden"
+                      } z-10`}
+                      style={{
+                        top: "100%", // Position it directly below the button
+                        marginTop: "0.25rem", // Add a small gap from the button
+                      }}
+                    >
                       <button
                         onClick={() => handleEdit(customer.id)}
                         className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
@@ -187,7 +246,7 @@ const CustomersPage: React.FC = () => {
                         onClick={() => handleDelete(customer.id)}
                         className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
                       >
-                        Delete Customer
+                        Delete
                       </button>
                     </div>
                   </td>
@@ -195,7 +254,7 @@ const CustomersPage: React.FC = () => {
               ))
             ) : (
               <tr>
-                <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
+                <td colSpan={5} className="text-center text-gray-500">
                   No customers found
                 </td>
               </tr>
@@ -203,6 +262,14 @@ const CustomersPage: React.FC = () => {
           </tbody>
         </table>
       </div>
+
+      <AddCustomer isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <EditCustomerModal
+        isOpen={isEditModalOpen}
+        customer={selectedCustomer}
+        onClose={() => setIsEditModalOpen(false)}
+        onSave={handleSave}
+      />
     </div>
   );
 };

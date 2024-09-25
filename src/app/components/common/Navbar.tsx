@@ -33,6 +33,11 @@ const Navbar: React.FC = () => {
     };
   }, []);
 
+  // Function to close the dropdown menu
+  const closeDropdown = () => {
+    setIsProfileDropdownOpen(false);
+  };
+
   return (
     <nav className="bg-red-500 p-4 justify-end items-center hidden lg:flex relative">
       {/* Profile Picture */}
@@ -54,12 +59,16 @@ const Navbar: React.FC = () => {
           >
             <ul className="py-2">
               <li className="px-4 py-2 hover:bg-gray-100">
-                <Link href="/dashboard/profile" className="block">
+                <Link
+                  href="/dashboard/profile"
+                  className="block"
+                  onClick={closeDropdown}
+                >
                   Profile Settings
                 </Link>
               </li>
               <li className="px-4 py-2 hover:bg-gray-100">
-                <Link href="/dashboard/logout" className="block">
+                <Link href="/login" className="block" onClick={closeDropdown}>
                   Logout
                 </Link>
               </li>

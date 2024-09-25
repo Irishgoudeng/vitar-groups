@@ -48,6 +48,11 @@ const Sidebar: React.FC = () => {
     e.stopPropagation();
   };
 
+  // Function to handle link clicks and close dropdowns
+  const handleLinkClick = () => {
+    setOpenDropdown(null); // Close any open dropdowns
+  };
+
   return (
     <div className="bg-transparent fixed">
       <div className="block lg:hidden p-4 bg-transparent">
@@ -88,6 +93,7 @@ const Sidebar: React.FC = () => {
                 className={`block py-2 px-4 rounded hover:bg-red-400 ${
                   pathname === "/dashboard" ? "bg-red-400 text-white" : ""
                 }`}
+                onClick={handleLinkClick} // Close dropdown on link click
               >
                 <i className="bx bx-home mr-2"></i> Home
               </Link>
@@ -132,6 +138,7 @@ const Sidebar: React.FC = () => {
                           ? "bg-red-400 text-white"
                           : ""
                       }`}
+                      // onClick={handleLinkClick} // Close dropdown on link click
                     >
                       <i className="bx bx-list-ol mr-2"></i> Job List
                     </Link>
@@ -144,6 +151,7 @@ const Sidebar: React.FC = () => {
                           ? "bg-red-400 text-white"
                           : ""
                       }`}
+                      // onClick={handleLinkClick} // Close dropdown on link click
                     >
                       <i className="bx bx-plus-circle mr-2"></i> Add New Job
                     </Link>
@@ -191,6 +199,7 @@ const Sidebar: React.FC = () => {
                           ? "bg-red-400 text-white"
                           : ""
                       }`}
+                      // onClick={handleLinkClick} // Close dropdown on link click
                     >
                       <i className="bx bx-calculator mr-2"></i> Calibration Data
                       (Volumetric)
@@ -204,6 +213,7 @@ const Sidebar: React.FC = () => {
                           ? "bg-red-400 text-white"
                           : ""
                       }`}
+                      // onClick={handleLinkClick} // Close dropdown on link click
                     >
                       <i className="bx bx-calculator mr-2"></i> Calibration Data
                       (Volumetric Glassware)
@@ -217,6 +227,7 @@ const Sidebar: React.FC = () => {
                           ? "bg-red-400 text-white"
                           : ""
                       }`}
+                      // onClick={handleLinkClick} // Close dropdown on link click
                     >
                       <i className="bx bx-calculator mr-2"></i> Uncertainty
                       Calculation (Volumetric Glassware)
@@ -237,6 +248,7 @@ const Sidebar: React.FC = () => {
                     ? "bg-red-400 text-white"
                     : ""
                 }`}
+                onClick={handleLinkClick} // Close dropdown on link click
               >
                 <i className="bx bx-user mr-2"></i> Customers
               </Link>
@@ -247,23 +259,33 @@ const Sidebar: React.FC = () => {
                 className={`block py-2 px-4 rounded hover:bg-red-400 ${
                   pathname === "/dashboard/users" ? "bg-red-400 text-white" : ""
                 }`}
+                onClick={handleLinkClick} // Close dropdown on link click
               >
-                <i className="bx bx-user-circle mr-2"></i> Users
+                <i className="bx bx-group mr-2"></i> Users
+              </Link>
+            </li>
+            <li className="mb-2">
+              <Link
+                href="/dashboard/settings"
+                className={`block py-2 px-4 rounded hover:bg-red-400 ${
+                  pathname === "/dashboard/settings"
+                    ? "bg-red-400 text-white"
+                    : ""
+                }`}
+                onClick={handleLinkClick} // Close dropdown on link click
+              >
+                <i className="bx bx-cog mr-2"></i> Account Settings
               </Link>
             </li>
           </ul>
 
-          <div className="absolute bottom-5 left-4">
-            <div className="flex items-center">
-              <Image
-                src={profilePic}
-                alt="Profile Picture"
-                width={40}
-                height={40}
-                className="rounded-full mr-2"
-              />
-              <span className="text-sm font-semibold">User Name</span>
-            </div>
+          <div className="mt-4 text-center hidden">
+            <Image
+              src={profilePic}
+              alt="Profile"
+              className="rounded-full w-12 h-12 mx-auto"
+            />
+            <p className="mt-2 text-sm font-medium">User Name</p>
           </div>
         </div>
       </div>

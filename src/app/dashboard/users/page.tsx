@@ -1,9 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+import { User } from "../../types/Users";
+import AddUser from "@/app/components/Users/AddUserModal";
+import EditUserModal from "@/app/components/Users/EditUserModal";
 
-const initialUsers = [
+const initialUsers: User[] = [
   {
     id: "1",
     name: "John Doe",
@@ -40,9 +43,14 @@ const UsersPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [selectedRole, setSelectedRole] = useState("all");
-  const [users, setUsers] = useState(initialUsers);
+  const [users, setUsers] = useState<User[]>(initialUsers);
 
-  const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
+  // const router = useRouter();
 
   useEffect(() => {
     // You can also fetch users from an API here if needed
@@ -50,7 +58,9 @@ const UsersPage: React.FC = () => {
   }, []);
 
   const handleEdit = (userId: string) => {
-    router.push(`/dashboard/users/${userId}/edit`);
+    const userToEdit = users.find((users) => users.id === userId) || null;
+    setSelectedUser(userToEdit);
+    setIsEditModalOpen(true);
   };
 
   const handleDelete = (userId: string) => {
@@ -59,8 +69,15 @@ const UsersPage: React.FC = () => {
     }
   };
 
+  const handleSave = (updatedCustomer: User) => {
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === updatedCustomer.id ? updatedCustomer : user
+      )
+    );
+  };
   const handleAdd = () => {
-    router.push(`/dashboard/users/add`);
+    setIsModalOpen(true);
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -236,6 +253,13 @@ const UsersPage: React.FC = () => {
           </tbody>
         </table>
       </div>
+      <AddUser isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <EditUserModal
+        isOpen={isEditModalOpen}
+        User={selectedUser}
+        onClose={() => setIsEditModalOpen(false)}
+        onSave={handleSave}
+      />
     </div>
   );
 };
