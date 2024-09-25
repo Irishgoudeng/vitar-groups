@@ -12,25 +12,15 @@ const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
-  const [isDataDropdownOpen, setIsDataDropdownOpen] = useState(false);
-  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isAddJobsDropdownOpen, setIsAddJobsDropdownOpen] = useState(false);
-
-  const toggleDataDropdown = () => {
-    setIsDataDropdownOpen(!isDataDropdownOpen);
-  };
-
-  const toggleProfileDropdown = () => {
-    setIsProfileDropdownOpen(!isProfileDropdownOpen);
-  };
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const toggleAddJobsDropdown = () => {
-    setIsAddJobsDropdownOpen(!isAddJobsDropdownOpen);
+  const toggleDropdown = (dropdownName: string) => {
+    setOpenDropdown(openDropdown === dropdownName ? null : dropdownName);
   };
 
   useEffect(() => {
@@ -60,7 +50,7 @@ const Sidebar: React.FC = () => {
 
   return (
     <div className="bg-transparent fixed">
-      <div className="block lg:hidden p-4 bg-transparent   ">
+      <div className="block lg:hidden p-4 bg-transparent">
         <button onClick={toggleSidebar} className="text-red-700">
           <svg
             className="w-6 h-6"
@@ -104,7 +94,7 @@ const Sidebar: React.FC = () => {
             </li>
             <li className="mb-4">
               <button
-                onClick={toggleAddJobsDropdown}
+                onClick={() => toggleDropdown("addJobs")}
                 className={`w-full flex justify-between items-center py-2 px-4 rounded hover:bg-red-400 ${
                   pathname.includes("/dashboard/jobs")
                     ? "bg-red-400 text-white"
@@ -116,7 +106,7 @@ const Sidebar: React.FC = () => {
                 </span>
                 <svg
                   className={`w-4 h-4 transform transition-transform ${
-                    isAddJobsDropdownOpen ? "rotate-180" : ""
+                    openDropdown === "addJobs" ? "rotate-180" : ""
                   }`}
                   fill="none"
                   stroke="currentColor"
@@ -132,7 +122,7 @@ const Sidebar: React.FC = () => {
                 </svg>
               </button>
 
-              {isAddJobsDropdownOpen && (
+              {openDropdown === "addJobs" && (
                 <ul className="ml-4 mt-2" onClick={handleDropdownClick}>
                   <li className="mb-2">
                     <Link
@@ -167,7 +157,7 @@ const Sidebar: React.FC = () => {
           <ul>
             <li className="mb-4">
               <button
-                onClick={toggleDataDropdown}
+                onClick={() => toggleDropdown("calibrationData")}
                 className="w-full flex justify-between items-center py-2 px-4 rounded hover:bg-red-400"
               >
                 <span>
@@ -175,7 +165,7 @@ const Sidebar: React.FC = () => {
                 </span>
                 <svg
                   className={`w-4 h-4 transform transition-transform ${
-                    isDataDropdownOpen ? "rotate-180" : ""
+                    openDropdown === "calibrationData" ? "rotate-180" : ""
                   }`}
                   fill="none"
                   stroke="currentColor"
@@ -191,7 +181,7 @@ const Sidebar: React.FC = () => {
                 </svg>
               </button>
 
-              {isDataDropdownOpen && (
+              {openDropdown === "calibrationData" && (
                 <ul className="ml-4 mt-2" onClick={handleDropdownClick}>
                   <li className="mb-2">
                     <Link
@@ -258,59 +248,22 @@ const Sidebar: React.FC = () => {
                   pathname === "/dashboard/users" ? "bg-red-400 text-white" : ""
                 }`}
               >
-                <i className="bx bx-group mr-2"></i> Users
-              </Link>
-            </li>
-            <li className="mb-2">
-              <Link
-                href="/dashboard/settings"
-                className={`block py-2 px-4 rounded hover:bg-red-400 ${
-                  pathname === "/dashboard/settings"
-                    ? "bg-red-400 text-white"
-                    : ""
-                }`}
-              >
-                <i className="bx bx-cog mr-2"></i> Settings
+                <i className="bx bx-user-circle mr-2"></i> Users
               </Link>
             </li>
           </ul>
 
-          <div className="absolute bottom-4 left-4 flex items-center xl:hidden">
-            <Image
-              src={profilePic}
-              alt="Profile Picture"
-              width={40}
-              height={40}
-              className="rounded-full mr-2"
-            />
-            <button
-              onClick={toggleProfileDropdown}
-              className="text-red-500 flex items-center"
-            >
-              <span className="mr-2">Profile</span>
-              <i
-                className={`bx ${
-                  isProfileDropdownOpen ? "bx-chevron-up" : "bx-chevron-down"
-                } text-lg`}
-              ></i>
-            </button>
-
-            {isProfileDropdownOpen && (
-              <div className="absolute left-0 mt-2 w-32 bg-white shadow-lg rounded">
-                <Link
-                  href="/dashboard/profile"
-                  className="block py-2 px-4 hover:bg-red-400"
-                >
-                  Profile Settings
-                </Link>
-                <Link
-                  href="/logout"
-                  className="block py-2 px-4 hover:bg-red-400"
-                >
-                  Logout
-                </Link>
-              </div>
-            )}
+          <div className="absolute bottom-5 left-4">
+            <div className="flex items-center">
+              <Image
+                src={profilePic}
+                alt="Profile Picture"
+                width={40}
+                height={40}
+                className="rounded-full mr-2"
+              />
+              <span className="text-sm font-semibold">User Name</span>
+            </div>
           </div>
         </div>
       </div>
