@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <div>
       <h1>Landing Page</h1>
-      <Button label="To Login" onClick={landingRouter} />
+      <Button type="button" label="To Login" onClick={landingRouter} />
     </div>
   );
 };
