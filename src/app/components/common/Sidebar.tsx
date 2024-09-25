@@ -98,6 +98,20 @@ const Sidebar: React.FC = () => {
                 <i className="bx bx-home mr-2"></i> Home
               </Link>
             </li>
+
+            <li className="mb-2">
+              <Link
+                href="/dashboard/customers"
+                className={`block py-2 px-4 rounded hover:bg-red-400 ${
+                  pathname === "/dashboard/customers"
+                    ? "bg-red-400 text-white"
+                    : ""
+                }`}
+                onClick={handleLinkClick} // Close dropdown on link click
+              >
+                <i className="bx bx-user mr-2"></i> Customers
+              </Link>
+            </li>
             <li className="mb-4">
               <button
                 onClick={() => toggleDropdown("addJobs")}
@@ -240,19 +254,6 @@ const Sidebar: React.FC = () => {
 
           <h2 className="text-lg font-semibold text-red-500 mb-2">Settings</h2>
           <ul>
-            <li className="mb-2">
-              <Link
-                href="/dashboard/customers"
-                className={`block py-2 px-4 rounded hover:bg-red-400 ${
-                  pathname === "/dashboard/customers"
-                    ? "bg-red-400 text-white"
-                    : ""
-                }`}
-                onClick={handleLinkClick} // Close dropdown on link click
-              >
-                <i className="bx bx-user mr-2"></i> Customers
-              </Link>
-            </li>
             <li className="mb-2">
               <Link
                 href="/dashboard/users"
