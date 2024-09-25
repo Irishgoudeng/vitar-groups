@@ -2,55 +2,21 @@
 
 import { useState } from "react";
 import Button from "../../../components/common/Button";
+import InputField from "@/app/components/common/InputField";
+import DisabledField from "@/app/components/common/DisabledField";
 
 const AddJobPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState("summary");
 
-  // Reusable input component
-  const InputField: React.FC<{
-    id: string;
-    label: string;
-    placeholder?: string;
-  }> = ({ id, label, placeholder }) => (
-    <div className="mb-4 xl:mb-6">
-      <label
-        htmlFor={id}
-        className="block mb-2 text-xs xl:text-sm font-bold text-gray-900"
-      >
-        {label}
-      </label>
-      <input
-        type="text"
-        id={id}
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-        placeholder={placeholder}
-        required
-      />
-    </div>
-  );
-
-  const DisabledField: React.FC<{
-    id: string;
-    label: string;
-    placeholder?: string;
-  }> = ({ id, label, placeholder }) => (
-    <div className="xl:mb-6">
-      <label
-        htmlFor={id}
-        className="block mb-2 text-xs xl:text-sm font-bold text-gray-900 "
-      >
-        {label}
-      </label>
-      <input
-        type="text"
-        id={id}
-        className="bg-gray-300 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-        placeholder={placeholder}
-        required
-        disabled
-      />
-    </div>
-  );
+  // State management for input fields
+  const [customerName, setCustomerName] = useState("");
+  const [contactName, setContactName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [middleName, setMiddleName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [mobilePhone, setMobilePhone] = useState("");
+  const [emailAddress, setEmailAddress] = useState("");
 
   const equipmentOptions = [
     { id: "1", name: "Thermometer" },
@@ -64,15 +30,15 @@ const AddJobPage: React.FC = () => {
       <h1 className="text-3xl font-semibold text-gray-900 mb-8">Add Job</h1>
 
       {/* Tab Navigation */}
-      <div className="flex space-x-4 mb-8">
+      <div className="flex space-x-4 mb-8 border-b">
         {["summary", "location", "scheduling"].map((tab) => (
           <span
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`cursor-pointer px-4 py-2 border ${
+            className={`cursor-pointer px-4 py-2 border-b-2 ${
               activeTab === tab
-                ? "border-red-600 text-red-600 font-semibold underline"
-                : "border-transparent text-gray-700"
+                ? "border-red-600 text-red-600 font-semibold"
+                : "border-transparent text-gray-700 hover:border-gray-300"
             }`}
           >
             {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -82,14 +48,16 @@ const AddJobPage: React.FC = () => {
 
       <form className="space-y-6 text-black bg-gray-200 p-8 m-4">
         {activeTab === "summary" && (
-          <div className="">
-            <h2 className="text-2xl font-bold mb-4 xl:mb-6 ">Job Summary</h2>
+          <div>
+            <h2 className="text-2xl font-bold mb-4 xl:mb-6">Job Summary</h2>
 
             {/* Search Customer Name Input */}
             <InputField
               id="customer_name"
               label="Search Customer Name"
               placeholder="ex. 1001-250"
+              value={customerName}
+              onChange={(e) => setCustomerName(e.target.value)}
             />
 
             <hr className="my-4" />
@@ -105,24 +73,31 @@ const AddJobPage: React.FC = () => {
               id="contact_name"
               label="Contact Name"
               placeholder="Contact Name"
+              value={contactName}
+              onChange={(e) => setContactName(e.target.value)}
             />
 
-            {/* Map for multiple contact fields */}
             <div className="grid grid-cols-3 gap-4 xl:gap-6 mb-6">
               <InputField
                 id="first_name"
                 label="First Name"
                 placeholder="ex. Contact Details"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
               />
               <InputField
                 id="middle_name"
                 label="Middle Name"
                 placeholder="ex. Contact Details"
+                value={middleName}
+                onChange={(e) => setMiddleName(e.target.value)}
               />
               <InputField
                 id="last_name"
                 label="Last Name"
                 placeholder="ex. Contact Details"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
               />
             </div>
 
@@ -131,16 +106,22 @@ const AddJobPage: React.FC = () => {
                 id="phone_number"
                 label="Phone Number"
                 placeholder="ex. Contact Details"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
               />
               <InputField
                 id="mobile_phone"
                 label="Mobile Phone"
                 placeholder="ex. Contact Details"
+                value={mobilePhone}
+                onChange={(e) => setMobilePhone(e.target.value)}
               />
               <InputField
                 id="email_address"
                 label="Email Address"
                 placeholder="ex. Contact Details"
+                value={emailAddress}
+                onChange={(e) => setEmailAddress(e.target.value)}
               />
             </div>
 
@@ -177,7 +158,13 @@ const AddJobPage: React.FC = () => {
             <h2 className="text-2xl font-bold mt-8 mb-4">Job Location</h2>
             <p className="mb-4">Details about Job Location</p>
 
-            <InputField id="location_id" label="Location ID" placeholder="" />
+            <InputField
+              id="location_id"
+              label="Location ID"
+              placeholder=""
+              value=""
+              onChange={() => {}}
+            />
 
             <div className="grid grid-cols-3 gap-4 xl:gap-6 mb-6">
               <DisabledField
@@ -266,20 +253,21 @@ const AddJobPage: React.FC = () => {
               />
             </div>
             {/* Job Priority */}
-            <div className="mb-6 xl:w-1/6">
+            <div className="mb-6">
               <label
-                htmlFor="job_priority"
-                className="block mb-2 text-xs xl:text-sm font-bold text-gray-900"
+                htmlFor="priority"
+                className="block mb-2 text-sm font-bold text-gray-900"
               >
                 Job Priority
               </label>
               <select
-                id="job_priority"
+                id="priority"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 required
               >
-                <option value="High">High</option>
-                <option value="Low">Low</option>
+                <option value="">Select Priority</option>
+                <option value="high">High</option>
+                <option value="low">Low</option>
               </select>
             </div>
           </div>
@@ -287,10 +275,16 @@ const AddJobPage: React.FC = () => {
 
         {/* Submit Button */}
         <div className="flex justify-end items-end">
-          <Button
-            label={activeTab === "summary" || "location" ? "Next" : "Submit"}
-            type="button" // or whatever type you need
-          />
+          <div className="xl:w-1/6 w-full">
+            <Button
+              label={
+                activeTab === "summary" || activeTab === "location"
+                  ? "Next"
+                  : "Schedule Job"
+              }
+              type="submit"
+            />
+          </div>
         </div>
       </form>
     </div>
