@@ -27,7 +27,7 @@ const SettingsPage = () => {
 
   return (
     <div className="p-6 lg:p-12 bg-white min-h-screen">
-      <h1 className="text-3xl font-semibold text-gray-900 mb-8">
+      <h1 className="text-3xl lg:text-4xl font-semibold text-gray-900 mb-4 lg:mb-8">
         Account Settings
       </h1>
 
@@ -44,7 +44,7 @@ const SettingsPage = () => {
       />
 
       {/* Render the active tab content */}
-      <div className="mt-8">{renderActiveTab()}</div>
+      <div className="mt-4 lg:mt-8">{renderActiveTab()}</div>
     </div>
   );
 };

@@ -122,7 +122,7 @@ const CustomersPage: React.FC = () => {
   }, [dropdownOpen]);
 
   return (
-    <div className="p-6 lg:p-12 bg-white h-screen overflow-x-hidden">
+    <div className="p-8 lg:p-12 bg-white h-screen overflow-x-hidden overflow-y-hidden">
       <h1 className="text-3xl font-semibold text-gray-900 mb-4 py-8 lg:mb-0">
         Customers
       </h1>
