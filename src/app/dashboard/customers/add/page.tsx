@@ -6,7 +6,7 @@ import AddCustomerInfo from "@/app/components/Customers/AddCustomerInfo";
 // import AddSiteInfo from "@/app/components/Customers/AddSiteInfo";
 // import AddEquipmentInfo from "@/app/components/Customers/AddEquipmentInfo";
 
-import CustomerTabs from "@/app/components/Customers/CustomersTabs"; // Ensure this imports the updated Tabs component
+// import CustomerTabs from "@/app/components/Customers/CustomersTabs"; // Ensure this imports the updated Tabs component
 
 const AddCustomerPage = () => {
   const [activeTab, setActiveTab] = useState<string>("custInfo");
@@ -25,10 +25,10 @@ const AddCustomerPage = () => {
   };
 
   // Define which tabs should be disabled
-  const disabledTabs = {
-    siteInfo: activeTab !== "custInfo", // Disable Site Information tab unless Customer Info is completed
-    equipInfo: activeTab !== "siteInfo", // Disable Equipment Information tab unless Site Info is completed
-  };
+  // const disabledTabs = {
+  //   siteInfo: activeTab !== "custInfo", // Disable Site Information tab unless Customer Info is completed
+  //   equipInfo: activeTab !== "siteInfo", // Disable Equipment Information tab unless Site Info is completed
+  // };
 
   return (
     <div className="p-6 lg:p-12 bg-white min-h-screen">
@@ -37,7 +37,7 @@ const AddCustomerPage = () => {
       </h1>
 
       {/* Tab Navigation */}
-      <CustomerTabs
+      {/* <CustomerTabs
         tabs={[
           { label: "Customer Information", key: "custInfo" },
           { label: "Site Information", key: "siteInfo" },
@@ -46,7 +46,7 @@ const AddCustomerPage = () => {
         activeTab={activeTab}
         onTabClick={setActiveTab}
         disabledTabs={disabledTabs} // Pass the disabled tabs here
-      />
+      /> */}
 
       {/* Render the active tab content */}
       <div className="mt-4 lg:mt-8">{renderActiveTab()}</div>
