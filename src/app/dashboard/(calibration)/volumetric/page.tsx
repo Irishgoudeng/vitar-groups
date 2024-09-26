@@ -1,6 +1,6 @@
 import React from "react";
 import Breadcrumb from "@/app/components/common/Breadcrumb";
-import Inputform from "@/app/components/common/Inputform";
+import Inputform from "@/app/components/CalibrationData/Inputform";
 
 const CalibrationVolumetric = () => {
   const breadcrumbTitles = [

@@ -1,95 +1,57 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-const AddCustomer: React.FC = () => {
-  const [newCustomer, setNewCustomer] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-  });
+import AddCustomerInfo from "@/app/components/Customers/AddCustomerInfo";
+// import AddSiteInfo from "@/app/components/Customers/AddSiteInfo";
+// import AddEquipmentInfo from "@/app/components/Customers/AddEquipmentInfo";
 
-  const router = useRouter();
+import CustomerTabs from "@/app/components/Customers/CustomersTabs"; // Ensure this imports the updated Tabs component
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewCustomer({
-      ...newCustomer,
-      [e.target.name]: e.target.value,
-    });
+const AddCustomerPage = () => {
+  const [activeTab, setActiveTab] = useState<string>("custInfo");
+
+  const renderActiveTab = () => {
+    switch (activeTab) {
+      case "custInfo":
+        return <AddCustomerInfo onNext={() => setActiveTab("siteInfo")} />;
+      // case "siteInfo":
+      //   return <AddSiteInfo onNext={() => setActiveTab("equipInfo")} onPrevious={() => setActiveTab("custInfo")} />;
+      // case "equipInfo":
+      //   return <AddEquipmentInfo onPrevious={() => setActiveTab("siteInfo")} />;
+      default:
+        return <AddCustomerInfo onNext={() => setActiveTab("siteInfo")} />;
+    }
   };
 
-  const handleSave = () => {
-    // Here you would typically send the newCustomer data to your backend or API
-    console.log("New customer added:", newCustomer);
-
-    // Redirect to customers list after saving
-    router.push("/dashboard/customers");
+  // Define which tabs should be disabled
+  const disabledTabs = {
+    siteInfo: activeTab !== "custInfo", // Disable Site Information tab unless Customer Info is completed
+    equipInfo: activeTab !== "siteInfo", // Disable Equipment Information tab unless Site Info is completed
   };
 
   return (
-    <div className="p-6 lg:p-12 bg-white h-screen">
-      <h1 className="text-3xl font-semibold text-gray-900 mb-8">
-        Add Customer
+    <div className="p-6 lg:p-12 bg-white min-h-screen">
+      <h1 className="text-3xl lg:text-4xl font-semibold text-gray-900 mb-4 lg:mb-8">
+        Add New Customer
       </h1>
 
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700">Name</label>
-        <input
-          type="text"
-          name="name"
-          value={newCustomer.name}
-          onChange={handleChange}
-          className="mt-1 px-4 py-2 border border-gray-300 rounded-lg text-black w-full"
-        />
-      </div>
+      {/* Tab Navigation */}
+      <CustomerTabs
+        tabs={[
+          { label: "Customer Information", key: "custInfo" },
+          { label: "Site Information", key: "siteInfo" },
+          { label: "Equipment Information", key: "equipInfo" },
+        ]}
+        activeTab={activeTab}
+        onTabClick={setActiveTab}
+        disabledTabs={disabledTabs} // Pass the disabled tabs here
+      />
 
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700">Email</label>
-        <input
-          type="email"
-          name="email"
-          value={newCustomer.email}
-          onChange={handleChange}
-          className="mt-1 px-4 py-2 border border-gray-300 rounded-lg text-black w-full"
-        />
-      </div>
-
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700">Phone</label>
-        <input
-          type="text"
-          name="phone"
-          value={newCustomer.phone}
-          onChange={handleChange}
-          className="mt-1 px-4 py-2 border border-gray-300 rounded-lg text-black w-full"
-        />
-      </div>
-
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700">
-          Address
-        </label>
-        <input
-          type="text"
-          name="address"
-          value={newCustomer.address}
-          onChange={handleChange}
-          className="mt-1 px-4 py-2 border border-gray-300 rounded-lg text-black w-full"
-        />
-      </div>
-
-      <div className="flex justify-end">
-        <button
-          onClick={handleSave}
-          className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-        >
-          Save Customer
-        </button>
-      </div>
+      {/* Render the active tab content */}
+      <div className="mt-4 lg:mt-8">{renderActiveTab()}</div>
     </div>
   );
 };
 
-export default AddCustomer;
+export default AddCustomerPage;

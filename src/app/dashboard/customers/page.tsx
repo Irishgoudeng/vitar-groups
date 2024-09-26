@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import AddCustomer from "@/app/components/Customers/AddCustomerModal";
+// import AddCustomer from "@/app/components/Customers/AddCustomerModal";
 import EditCustomerModal from "@/app/components/Customers/EditCustomerModal";
 import { Customer } from "@/app/types/Customer"; // Make sure to import the Customer type
 
@@ -34,7 +34,7 @@ const CustomersPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [customers, setCustomers] = useState<Customer[]>(initialCustomers);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
     null
@@ -65,7 +65,7 @@ const CustomersPage: React.FC = () => {
   };
 
   const handleAdd = () => {
-    setIsModalOpen(true);
+    router.push("/dashboard/customers/add");
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -263,7 +263,7 @@ const CustomersPage: React.FC = () => {
         </table>
       </div>
 
-      <AddCustomer isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      {/* <AddCustomer isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} /> */}
       <EditCustomerModal
         isOpen={isEditModalOpen}
         customer={selectedCustomer}

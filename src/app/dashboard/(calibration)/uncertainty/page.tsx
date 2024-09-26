@@ -1,5 +1,5 @@
 import Breadcrumb from "@/app/components/common/Breadcrumb";
-import UncertaintyInput from "@/app/components/common/UncertaintyInput";
+import UncertaintyInput from "@/app/components/CalibrationData/UncertaintyInput";
 import React from "react";
 
 const UncertaintyCalibration = () => {

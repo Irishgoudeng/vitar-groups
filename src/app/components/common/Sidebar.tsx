@@ -5,13 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import logo from "../../../../public/assets/vitar-logo.png";
 import profilePic from "../../../../public/assets/prof-pic.png";
-
 import { usePathname } from "next/navigation";
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const sidebarRef = useRef<HTMLDivElement | null>(null);
-
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
@@ -48,9 +46,8 @@ const Sidebar: React.FC = () => {
     e.stopPropagation();
   };
 
-  // Function to handle link clicks and close dropdowns
   const handleLinkClick = () => {
-    setOpenDropdown(null); // Close any open dropdowns
+    setOpenDropdown(null);
   };
 
   return (
@@ -93,9 +90,23 @@ const Sidebar: React.FC = () => {
                 className={`block py-2 px-4 rounded hover:bg-red-400 ${
                   pathname === "/dashboard" ? "bg-red-400 text-white" : ""
                 }`}
-                onClick={handleLinkClick} // Close dropdown on link click
+                onClick={handleLinkClick}
               >
                 <i className="bx bx-home mr-2"></i> Home
+              </Link>
+            </li>
+
+            <li className="mb-2">
+              <Link
+                href="/dashboard/customers"
+                className={`block py-2 px-4 rounded hover:bg-red-400 ${
+                  pathname.includes("/dashboard/customers")
+                    ? "bg-red-400 text-white"
+                    : ""
+                }`}
+                onClick={handleLinkClick}
+              >
+                <i className="bx bx-user mr-2"></i> Customers
               </Link>
             </li>
             <li className="mb-4">
@@ -138,7 +149,6 @@ const Sidebar: React.FC = () => {
                           ? "bg-red-400 text-white"
                           : ""
                       }`}
-                      // onClick={handleLinkClick} // Close dropdown on link click
                     >
                       <i className="bx bx-list-ol mr-2"></i> Job List
                     </Link>
@@ -151,13 +161,38 @@ const Sidebar: React.FC = () => {
                           ? "bg-red-400 text-white"
                           : ""
                       }`}
-                      // onClick={handleLinkClick} // Close dropdown on link click
                     >
                       <i className="bx bx-plus-circle mr-2"></i> Add New Job
                     </Link>
                   </li>
                 </ul>
               )}
+            </li>
+            <li className="mb-2">
+              <Link
+                href="/dashboard/equipment"
+                className={`block py-2 px-4 rounded hover:bg-red-400 ${
+                  pathname.includes("/dashboard/equipment")
+                    ? "bg-red-400 text-white"
+                    : ""
+                }`}
+                onClick={handleLinkClick}
+              >
+                <i className="bx bx-wrench mr-2"></i> Equipment
+              </Link>
+            </li>
+            <li className="mb-2">
+              <Link
+                href="/dashboard/site"
+                className={`block py-2 px-4 rounded hover:bg-red-400 ${
+                  pathname.includes("/dashboard/site")
+                    ? "bg-red-400 text-white"
+                    : ""
+                }`}
+                onClick={handleLinkClick}
+              >
+                <i className="bx bx-map mr-2"></i> Site
+              </Link>
             </li>
           </ul>
 
@@ -199,7 +234,6 @@ const Sidebar: React.FC = () => {
                           ? "bg-red-400 text-white"
                           : ""
                       }`}
-                      // onClick={handleLinkClick} // Close dropdown on link click
                     >
                       <i className="bx bx-calculator mr-2"></i> Calibration Data
                       (Volumetric)
@@ -213,7 +247,6 @@ const Sidebar: React.FC = () => {
                           ? "bg-red-400 text-white"
                           : ""
                       }`}
-                      // onClick={handleLinkClick} // Close dropdown on link click
                     >
                       <i className="bx bx-calculator mr-2"></i> Calibration Data
                       (Volumetric Glassware)
@@ -227,7 +260,6 @@ const Sidebar: React.FC = () => {
                           ? "bg-red-400 text-white"
                           : ""
                       }`}
-                      // onClick={handleLinkClick} // Close dropdown on link click
                     >
                       <i className="bx bx-calculator mr-2"></i> Uncertainty
                       Calculation (Volumetric Glassware)
@@ -242,24 +274,11 @@ const Sidebar: React.FC = () => {
           <ul>
             <li className="mb-2">
               <Link
-                href="/dashboard/customers"
-                className={`block py-2 px-4 rounded hover:bg-red-400 ${
-                  pathname === "/dashboard/customers"
-                    ? "bg-red-400 text-white"
-                    : ""
-                }`}
-                onClick={handleLinkClick} // Close dropdown on link click
-              >
-                <i className="bx bx-user mr-2"></i> Customers
-              </Link>
-            </li>
-            <li className="mb-2">
-              <Link
                 href="/dashboard/users"
                 className={`block py-2 px-4 rounded hover:bg-red-400 ${
                   pathname === "/dashboard/users" ? "bg-red-400 text-white" : ""
                 }`}
-                onClick={handleLinkClick} // Close dropdown on link click
+                onClick={handleLinkClick}
               >
                 <i className="bx bx-group mr-2"></i> Users
               </Link>
@@ -272,7 +291,7 @@ const Sidebar: React.FC = () => {
                     ? "bg-red-400 text-white"
                     : ""
                 }`}
-                onClick={handleLinkClick} // Close dropdown on link click
+                onClick={handleLinkClick}
               >
                 <i className="bx bx-cog mr-2"></i> Account Settings
               </Link>

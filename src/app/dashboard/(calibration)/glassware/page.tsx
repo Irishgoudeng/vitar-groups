@@ -1,10 +1,10 @@
 import Breadcrumb from "@/app/components/common/Breadcrumb";
-import GlasswareInput from "@/app/components/common/GlasswareInput";
+import GlasswareInput from "@/app/components/CalibrationData/GlasswareInput";
 import React from "react";
 
 const VolumetricGlassware = () => {
   return (
-    <div className="bg-white">
+    <div className="bg-white min-h-screen">
       <Breadcrumb
         titles={[
           { name: "Dashboard", href: "/dashboard" },
@@ -12,7 +12,7 @@ const VolumetricGlassware = () => {
           { name: "Calibration Data (Volumetric Glassware)" },
         ]}
       />
-      <main className="bg-gray-50 h-screen xl:px-4">
+      <main className="bg-gray-50 min-h-screen xl:px-4">
         <div className="ml-4 pt-8 xl:ml-4 xl:pt-12 ">
           <h1 className="text-md xl:text-4xl font-bold text-black">
             Calibration Data (Volumetric Glassware)

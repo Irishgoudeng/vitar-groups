@@ -4,6 +4,11 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image"; // Import Image component
 
+interface Tab {
+  label: string;
+  key: string;
+}
+
 const JobDetailsPage: React.FC = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("summary");
@@ -25,6 +30,13 @@ const JobDetailsPage: React.FC = () => {
       endTime: "2024-09-23T11:00:00",
     },
   };
+
+  const tabs: Tab[] = [
+    { label: "Job Summary", key: "summary" },
+    { label: "Job Scheduling", key: "scheduling" },
+    { label: "Job Location", key: "location" },
+    { label: "Job Images", key: "images" },
+  ];
 
   const renderContent = () => {
     switch (activeTab) {
@@ -113,39 +125,36 @@ const JobDetailsPage: React.FC = () => {
       <h1 className="text-3xl font-semibold text-gray-900 mb-4">Job Details</h1>
 
       {/* Tab Navigation */}
-      <div className="flex space-x-4 mb-4">
-        <button
-          onClick={() => setActiveTab("summary")}
-          className={`px-4 py-2 rounded ${
-            activeTab === "summary" ? "bg-red-500 text-white" : "bg-gray-200"
-          }`}
+      <div className="mb-4">
+        {/* Dropdown for mobile view */}
+        <select
+          value={activeTab}
+          onChange={(e) => setActiveTab(e.target.value)}
+          className="block w-full mb-4 text-gray-600 border border-gray-300 rounded-lg sm:hidden"
         >
-          Job Summary
-        </button>
-        <button
-          onClick={() => setActiveTab("scheduling")}
-          className={`px-4 py-2 rounded ${
-            activeTab === "scheduling" ? "bg-red-500 text-white" : "bg-gray-200"
-          }`}
-        >
-          Job Scheduling
-        </button>
-        <button
-          onClick={() => setActiveTab("location")}
-          className={`px-4 py-2 rounded ${
-            activeTab === "location" ? "bg-red-500 text-white" : "bg-gray-200"
-          }`}
-        >
-          Job Location
-        </button>
-        <button
-          onClick={() => setActiveTab("images")}
-          className={`px-4 py-2 rounded ${
-            activeTab === "images" ? "bg-red-500 text-white" : "bg-gray-200"
-          }`}
-        >
-          Job Images
-        </button>
+          {tabs.map((tab) => (
+            <option key={tab.key} value={tab.key}>
+              {tab.label}
+            </option>
+          ))}
+        </select>
+
+        {/* Tab Navigation for larger screens */}
+        <div className="hidden sm:flex space-x-4 border-b border-gray-200">
+          {tabs.map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`pb-2 px-4 ${
+                activeTab === tab.key
+                  ? "border-b-2 border-red-600 text-red-600 font-semibold"
+                  : "text-gray-600"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Render active tab content */}
