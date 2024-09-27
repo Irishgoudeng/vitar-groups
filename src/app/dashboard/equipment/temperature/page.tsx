@@ -2,36 +2,33 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Equipment } from "@/app/types/Equipment";
-import AddEquipmentModal from "@/app/components/Equipment/AddEquipmentModal";
+import { SpecificEquipment } from "@/app/types/SpecificEquipment";
+import AddSpecificEquipmentModal from "@/app/components/Equipment/AddSpecificEquipmentModal";
 
 // Initial list of equipment data
-const initialEquipments: Equipment[] = [
+const initialSpecificEquipments: SpecificEquipment[] = [
   {
     id: "1",
-    customerID: "C001",
-    customerName: "John Doe",
-    siteID: "S001",
-    siteName: "Site A",
-    equipmentID: "E001",
-    equipmentName: "Equipment 1",
-    typeOfScope: "Temperature",
+    scope: "Temperature",
     description: "Temperature Block Calibrator",
     tagID: "ST-DB1",
+    make: "ISOTECH",
     model: "GEMINI 4857/550 BASIC",
     serialNumber: "40169/1",
-    rangeType: "-",
-    rangeMin: "50 °C ",
-    rangeMax: "500 °C",
+    type: "-",
+    range: "50 °C ~ 500 °C",
+    certificateNo: "-",
     traceability: "-",
   },
   // Add more equipment items as needed
 ];
 
-const EquipmentPage: React.FC = () => {
+const SpecificEquipmentPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
-  const [equipments, setEquipments] = useState<Equipment[]>(initialEquipments);
+  const [specificequipments, setEquipments] = useState<SpecificEquipment[]>(
+    initialSpecificEquipments
+  );
   const [dropdownOpen, setDropdownOpen] = useState<{ [key: string]: boolean }>(
     {}
   );
@@ -39,21 +36,23 @@ const EquipmentPage: React.FC = () => {
   const router = useRouter();
   const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
-  const handleDelete = (equipmentId: string) => {
+  const handleDelete = (tagID: string) => {
     const confirmDelete = confirm(
       "Are you sure you want to delete this equipment?"
     );
     if (confirmDelete) {
       setEquipments(
-        equipments.filter((equipment) => equipment.equipmentID !== equipmentId)
+        specificequipments.filter(
+          (specificequipments) => specificequipments.tagID !== tagID
+        )
       );
-      console.log(`Equipment with ID ${equipmentId} deleted`);
-      router.push(`/dashboard/equipment`);
+      console.log(`Equipment with ID ${tagID} deleted`);
+      router.push(`/dashboard/equipment/temperature`);
     }
   };
 
   const handleAdd = () => {
-    setIsModalOpen(true); // Open modal for adding new equipment
+    setIsModalOpen(true);
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,17 +63,19 @@ const EquipmentPage: React.FC = () => {
     setSelectedFilter(e.target.value);
   };
 
-  const handleAddEquipment = (newEquipment: Equipment) => {
-    setEquipments((prev) => [...prev, newEquipment]); // Add new equipment to the list
+  const handleAddEquipment = (newEquipment: SpecificEquipment) => {
+    setEquipments((prev) => [...prev, newEquipment]);
   };
 
-  const filteredEquipments = equipments.filter((equipment) => {
-    const matchesSearch = equipment.equipmentName
+  const filteredEquipments = specificequipments.filter((specificequipments) => {
+    const matchesSearch = specificequipments.description
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
     const matchesFilter =
       selectedFilter === "all" ||
-      equipment.siteName.toLowerCase().includes(selectedFilter.toLowerCase());
+      specificequipments.description
+        .toLowerCase()
+        .includes(selectedFilter.toLowerCase());
     return matchesSearch && matchesFilter;
   });
 
@@ -108,7 +109,7 @@ const EquipmentPage: React.FC = () => {
   return (
     <div className="p-8 lg:p-12 bg-white h-screen overflow-x-hidden overflow-y-hidden">
       <h1 className="text-3xl font-semibold text-gray-900 mb-4 py-8 lg:mb-0">
-        Equipments
+        Temperature & Humidity Equipment
       </h1>
       <div className="mb-6 flex flex-col lg:flex-row lg:justify-between lg:items-center">
         <div className="flex gap-4 mb-4 lg:mb-0">
@@ -134,34 +135,34 @@ const EquipmentPage: React.FC = () => {
           onClick={handleAdd}
           className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
         >
-          Add Equipment
+          Add Temperature & Humidity Equipment
         </button>
       </div>
 
       {/* Equipment List as Cards for smaller screens */}
       <div className="block lg:hidden text-black">
         {filteredEquipments.length > 0 ? (
-          filteredEquipments.map((equipment) => (
+          filteredEquipments.map((specificequipments) => (
             <div
-              key={equipment.equipmentID}
+              key={specificequipments.tagID}
               className="border rounded-lg p-4 mb-4 bg-white shadow"
             >
               <h2 className="text-xl font-semibold">
-                {equipment.equipmentName}
+                {specificequipments.description}
               </h2>
               <p className="text-gray-600">
-                Type of Scope: {equipment.typeOfScope}
+                Type of Scope: {specificequipments.scope}
               </p>
               <p className="text-gray-600">
-                Description: {equipment.description}
+                Description: {specificequipments.description}
               </p>
-              <p className="text-gray-600">Model: {equipment.model}</p>
+              <p className="text-gray-600">Model: {specificequipments.model}</p>
               <p className="text-gray-600">
-                Serial Number: {equipment.serialNumber}
+                Serial Number: {specificequipments.serialNumber}
               </p>
               <div className="mt-2">
                 <button
-                  onClick={() => handleDelete(equipment.equipmentID)}
+                  onClick={() => handleDelete(specificequipments.tagID)}
                   className="w-full px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                 >
                   Delete
@@ -180,10 +181,10 @@ const EquipmentPage: React.FC = () => {
           <thead className="text-xs text-gray-700 uppercase bg-gray-100">
             <tr>
               <th scope="col" className="px-6 py-3">
-                Equipment ID
+                Description
               </th>
               <th scope="col" className="px-6 py-3">
-                Equipment Name
+                TagID
               </th>
               <th scope="col" className="px-6 py-3">
                 Type of Scope
@@ -200,15 +201,14 @@ const EquipmentPage: React.FC = () => {
               <th scope="col" className="px-6 py-3">
                 Serial Number
               </th>
-
               <th scope="col" className="px-6 py-3">
                 Range Type
               </th>
               <th scope="col" className="px-6 py-3">
-                Range (Min)
+                Range
               </th>
               <th scope="col" className="px-6 py-3">
-                Range (Max)
+                Certificate No.
               </th>
               <th scope="col" className="px-6 py-3">
                 Traceability
@@ -220,25 +220,35 @@ const EquipmentPage: React.FC = () => {
           </thead>
           <tbody>
             {filteredEquipments.length > 0 ? (
-              filteredEquipments.map((equipment) => (
+              filteredEquipments.map((specificequipments) => (
                 <tr
-                  key={equipment.equipmentID}
+                  key={specificequipments.tagID}
                   className="border-b border-gray-200"
                 >
-                  <td className="px-6 py-4">{equipment.equipmentID}</td>
-                  <td className="px-6 py-4">{equipment.equipmentName}</td>
-                  <td className="px-6 py-4">{equipment.typeOfScope}</td>
-                  <td className="px-6 py-4">{equipment.description}</td>
-                  <td className="px-6 py-4">{equipment.tagID}</td>
-                  <td className="px-6 py-4">{equipment.model}</td>
-                  <td className="px-6 py-4">{equipment.serialNumber}</td>
-                  <td className="px-6 py-4">{equipment.rangeType}</td>
-                  <td className="px-6 py-4">{equipment.rangeMin}</td>
-                  <td className="px-6 py-4">{equipment.rangeMax}</td>
-                  <td className="px-6 py-4">{equipment.traceability}</td>
+                  <td className="px-6 py-4">
+                    {specificequipments.description}
+                  </td>
+                  <td className="px-6 py-4">{specificequipments.tagID}</td>
+                  <td className="px-6 py-4">{specificequipments.scope}</td>
+                  <td className="px-6 py-4">
+                    {specificequipments.description}
+                  </td>
+                  <td className="px-6 py-4">{specificequipments.tagID}</td>
+                  <td className="px-6 py-4">{specificequipments.model}</td>
+                  <td className="px-6 py-4">
+                    {specificequipments.serialNumber}
+                  </td>
+                  <td className="px-6 py-4">{specificequipments.type}</td>
+                  <td className="px-6 py-4">{specificequipments.range}</td>
+                  <td className="px-6 py-4">
+                    {specificequipments.certificateNo}
+                  </td>
+                  <td className="px-6 py-4">
+                    {specificequipments.traceability}
+                  </td>
                   <td className="px-6 py-4">
                     <button
-                      onClick={() => handleDelete(equipment.equipmentID)}
+                      onClick={() => handleDelete(specificequipments.tagID)}
                       className="text-red-500 hover:text-red-600"
                     >
                       Delete
@@ -258,13 +268,14 @@ const EquipmentPage: React.FC = () => {
       </div>
 
       {/* Modal for adding new equipment */}
-      <AddEquipmentModal
+      <AddSpecificEquipmentModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onAddEquipment={handleAddEquipment}
+        scopeLabel="Temperature & Humidity"
       />
     </div>
   );
 };
 
-export default EquipmentPage;
+export default SpecificEquipmentPage;

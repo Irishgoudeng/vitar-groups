@@ -168,19 +168,128 @@ const Sidebar: React.FC = () => {
                 </ul>
               )}
             </li>
-            <li className="mb-2">
-              <Link
-                href="/dashboard/equipment"
-                className={`block py-2 px-4 rounded hover:bg-red-400 ${
+
+            {/* Equipment Menu with Submenu */}
+            <li className="mb-4">
+              <button
+                onClick={() => toggleDropdown("equipment")}
+                className={`w-full flex justify-between items-center py-2 px-4 rounded hover:bg-red-400 ${
                   pathname.includes("/dashboard/equipment")
                     ? "bg-red-400 text-white"
                     : ""
                 }`}
-                onClick={handleLinkClick}
               >
-                <i className="bx bx-wrench mr-2"></i> Equipment
-              </Link>
+                <span>
+                  <i className="bx bx-wrench mr-2"></i> Equipment
+                </span>
+                <svg
+                  className={`w-4 h-4 transform transition-transform ${
+                    openDropdown === "equipment" ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+
+              {openDropdown === "equipment" && (
+                <ul className="ml-4 mt-2" onClick={handleDropdownClick}>
+                  <li className="mb-2">
+                    <Link
+                      href="/dashboard/equipment"
+                      className={`block py-2 px-4 text-sm rounded hover:bg-red-400 ${
+                        pathname === "/dashboard/equipment"
+                          ? "bg-red-400 text-white"
+                          : ""
+                      }`}
+                    >
+                      <i className="bx bx-wrench mr-2"></i> Equipment List
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      href="/dashboard/equipment/temperature"
+                      className={`block py-2 px-4 text-sm rounded hover:bg-red-400 ${
+                        pathname === "/dashboard/equipment/temperature"
+                          ? "bg-red-400 text-white"
+                          : ""
+                      }`}
+                    >
+                      <i className="bx bx-thermometer mr-2"></i> Temp & Humidity
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      href="/dashboard/equipment/pressure"
+                      className={`block py-2 px-4 text-sm rounded hover:bg-red-400 ${
+                        pathname === "/dashboard/equipment/pressure"
+                          ? "bg-red-400 text-white"
+                          : ""
+                      }`}
+                    >
+                      <i className="bx bx-gauge mr-2"></i> Pressure
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      href="/dashboard/equipment/electrical"
+                      className={`block py-2 px-4 text-sm rounded hover:bg-red-400 ${
+                        pathname === "/dashboard/equipment/electrical"
+                          ? "bg-red-400 text-white"
+                          : ""
+                      }`}
+                    >
+                      <i className="bx bx-plug mr-2"></i> Electrical
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      href="/dashboard/equipment/dimensional"
+                      className={`block py-2 px-4 text-sm rounded hover:bg-red-400 ${
+                        pathname === "/dashboard/equipment/dimensional"
+                          ? "bg-red-400 text-white"
+                          : ""
+                      }`}
+                    >
+                      <i className="bx bx-ruler mr-2"></i> Dimensional
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      href="/dashboard/equipment/volumetric"
+                      className={`block py-2 px-4 text-sm rounded hover:bg-red-400 ${
+                        pathname === "/dashboard/equipment/volumetric"
+                          ? "bg-red-400 text-white"
+                          : ""
+                      }`}
+                    >
+                      <i className="bx bx-calculator mr-2"></i> Volumetric
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      href="/dashboard/equipment/mechanical"
+                      className={`block py-2 px-4 text-sm rounded hover:bg-red-400 ${
+                        pathname === "/dashboard/equipment/mechanical"
+                          ? "bg-red-400 text-white"
+                          : ""
+                      }`}
+                    >
+                      <i className="bx bx-cog mr-2"></i> Mechanical
+                    </Link>
+                  </li>
+                </ul>
+              )}
             </li>
+
             <li className="mb-2">
               <Link
                 href="/dashboard/site"

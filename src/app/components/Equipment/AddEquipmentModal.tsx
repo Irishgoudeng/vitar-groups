@@ -4,6 +4,7 @@
 
 import React, { useState } from "react";
 import InputField from "@/app/components/common/InputField";
+import SelectField from "@/app/components/common/SelectField"; // Ensure this import is correct
 import Button from "@/app/components/common/Button";
 
 interface AddEquipmentModalProps {
@@ -22,6 +23,16 @@ const rangeOptions: Record<RangeType, { min: number; max: number }> = {
   // Add more types and their ranges as needed
 };
 
+const scopeOptions = [
+  { value: "Temperature", label: "Temperature" },
+  { value: "Electrical", label: "Electrical" },
+  { value: "Dimensional", label: "Dimensional" },
+  { value: "Mechanical", label: "Mechanical" },
+  { value: "Pressure", label: "Pressure" },
+  { value: "Volume", label: "Volume" },
+  { value: "Flow", label: "Flow" },
+];
+
 const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
   isOpen,
   onClose,
@@ -29,7 +40,7 @@ const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
 }) => {
   const [equipmentID, setEquipmentID] = useState("");
   const [equipmentName, setEquipmentName] = useState("");
-  const [typeOfScope, setTypeOfScope] = useState("");
+  const [typeOfScope, setTypeOfScope] = useState(""); // Corrected here to use a different state
   const [description, setDescription] = useState("");
   const [tagID, setTagID] = useState("");
   const [model, setModel] = useState("");
@@ -59,7 +70,7 @@ const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
     const newEquipment = {
       equipmentID,
       equipmentName,
-      typeOfScope,
+      typeOfScope, // Use typeOfScope state directly
       description,
       tagID,
       model,
@@ -104,12 +115,13 @@ const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
             value={equipmentName}
             onChange={(e) => setEquipmentName(e.target.value)}
           />
-          <InputField
+          {/* Use SelectField for Type of Scope */}
+          <SelectField
             id="type_of_scope"
             label="Type of Scope"
-            placeholder="Enter Type of Scope"
-            value={typeOfScope}
-            onChange={(e) => setTypeOfScope(e.target.value)}
+            value={typeOfScope} // Use the state for typeOfScope
+            onChange={(e) => setTypeOfScope(e.target.value)} // Update this to setTypeOfScope
+            options={scopeOptions}
           />
           <InputField
             id="description"

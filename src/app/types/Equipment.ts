@@ -11,7 +11,6 @@ export interface Equipment {
   tagID: string;
   model: string;
   serialNumber: string;
-  type: string;
   rangeType: string;
   rangeMin: string;
   rangeMax: string;
