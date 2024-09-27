@@ -161,6 +161,60 @@ const SitePage: React.FC = () => {
         </button>
       </div>
 
+      <div className="block lg:hidden">
+        {filteredSites.length > 0 ? (
+          filteredSites.map((site) => (
+            <div
+              key={site.siteID}
+              className="border rounded-lg p-4 mb-4 bg-white shadow text-black"
+            >
+              <h2 className="text-xl font-semibold">{site.siteName}</h2>
+              <p className="text-gray-600">Site ID: {site.siteID}</p>
+              <p className="text-gray-600">Street 1: {site.street1}</p>
+              <p className="text-gray-600">Street 2: {site.street2}</p>
+              <p className="text-gray-600">Street 3: {site.street3}</p>
+              <p className="text-gray-600">City: {site.city}</p>
+              <p className="text-gray-600">Postcode: {site.postcode}</p>
+              <p className="text-gray-600">Country: {site.country}</p>
+              <p className="text-gray-600">Latitude: {site.latitude}</p>
+              <p className="text-gray-600">Longitude: {site.longitude}</p>
+              <div className="flex justify-end mt-4">
+                <button
+                  onClick={() => toggleDropdown(site.siteID)}
+                  className="text-gray-500 hover:underline"
+                >
+                  &#x2022;&#x2022;&#x2022; {/* Three dots */}
+                </button>
+                <div
+                  ref={(el) => {
+                    if (el) {
+                      dropdownRefs.current[site.siteID] = el;
+                    } else {
+                      delete dropdownRefs.current[site.siteID];
+                    }
+                  }}
+                  className={`absolute right-0 w-48 bg-white border border-gray-200 rounded shadow-lg ${
+                    dropdownOpen[site.siteID] ? "block" : "hidden"
+                  } z-10`}
+                  style={{
+                    top: "100%", // Position it directly below the button
+                    marginTop: "0.25rem", // Add a small gap from the button
+                  }}
+                >
+                  <button
+                    onClick={() => handleDelete(site.siteID)}
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="text-center text-gray-500">No sites found</div>
+        )}
+      </div>
       {/* Table for larger screens */}
       <div className="hidden lg:block overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-600 bg-white border border-gray-200 rounded-lg shadow-md">
