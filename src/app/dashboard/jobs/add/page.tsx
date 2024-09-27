@@ -171,36 +171,61 @@ const AddJobPage: React.FC = () => {
                 id="location_name"
                 label="Location Name"
                 placeholder="ex. "
+                value="Auto-filled"
               />
-              <DisabledField id="street_no" label="Street No." placeholder="" />
+              <DisabledField
+                id="street_no"
+                label="Street No."
+                placeholder=""
+                value="Auto-filled"
+              />
               <DisabledField
                 id="street_address"
                 label="Street Address"
                 placeholder=""
+                value="Auto-filled"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-6 mb-6">
-              <DisabledField id="block_no" label="Block" placeholder="ex. " />
+              <DisabledField
+                id="block_no"
+                label="Block"
+                placeholder="ex. "
+                value="Auto-filled"
+              />
               <DisabledField
                 id="building_no"
                 label="Building No."
                 placeholder="ex. "
+                value="Auto-filled"
               />
             </div>
 
             <div className="grid grid-col-2 xl:grid-cols-4 gap-6 mb-6">
-              <DisabledField id="country" label="Country" placeholder="ex. " />
+              <DisabledField
+                id="country"
+                label="Country"
+                placeholder="ex. "
+                value="Auto-filled"
+              />
               <DisabledField
                 id="state_province"
                 label="State/Province"
                 placeholder="ex. "
+                value="Auto-filled"
               />
-              <DisabledField id="city" label="City" placeholder="ex. " />
+              <DisabledField
+                id="city"
+                label="City"
+                placeholder="ex. "
+                value="Auto-filled"
+              />
               <DisabledField
                 id="zip_postal"
                 label="Zip/Postal Code"
                 placeholder="ex. "
+                value="Auto-filled"
               />
             </div>
           </div>
@@ -250,6 +275,7 @@ const AddJobPage: React.FC = () => {
                 id="estimated_time"
                 label="Estimated Time (Hours)"
                 placeholder="e.g., 3 hours"
+                value="Auto-filled"
               />
             </div>
             {/* Job Priority */}
