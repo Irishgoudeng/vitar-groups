@@ -27,7 +27,6 @@ const MapClickHandler = ({
 interface AddSiteModalProps {
   isOpen: boolean;
   onClose: () => void;
-  q: any;
   onAddSite: (site: any) => void; // Update type as needed
 }
 
