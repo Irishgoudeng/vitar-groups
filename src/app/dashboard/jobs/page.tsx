@@ -161,7 +161,7 @@ const JobsPage: React.FC = () => {
       </div>
 
       {/* Job Table for larger screens */}
-      <div className="hidden lg:block overflow-x-auto">
+      <div className="hidden lg:block overflow-x-auto h-screen">
         <table className="w-full text-sm text-left text-gray-600 bg-white border border-gray-200 rounded-lg shadow-sm">
           <thead className="text-xs text-gray-700 uppercase bg-gray-100">
             <tr>

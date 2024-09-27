@@ -148,7 +148,7 @@ const UsersPage: React.FC = () => {
       </div>
 
       {/* User List */}
-      <div className="block lg:hidden">
+      <div className="block lg:hidden ">
         {filteredUsers.length > 0 ? (
           filteredUsers.map((user) => (
             <div
@@ -175,7 +175,7 @@ const UsersPage: React.FC = () => {
       </div>
 
       {/* Table for larger screens */}
-      <div className="hidden lg:block overflow-x-auto">
+      <div className="hidden lg:block overflow-x-auto h-screen">
         <table className="w-full text-sm text-left text-gray-600 bg-white border border-gray-200 rounded-lg shadow-md">
           <thead className="text-xs text-gray-700 uppercase bg-gray-100">
             <tr>

@@ -269,36 +269,48 @@ const SitePage: React.FC = () => {
                   <td className="px-6 py-4">{site.country}</td>
                   <td className="px-6 py-4">{site.latitude}</td>
                   <td className="px-6 py-4">{site.longitude}</td>
-                  <td className="px-6 py-4 relative">
+                  <td className="px-6 py-4 absolute">
+                    {/* Three-dot menu button */}
                     <button
-                      className="text-gray-500 hover:underline"
-                      onClick={() => toggleDropdown(site.siteID)}
+                      onClick={() =>
+                        setDropdownOpen((prev) => ({
+                          ...prev,
+                          [site.siteID]: !prev[site.siteID],
+                        }))
+                      }
+                      className="text-gray-600 hover:text-gray-800 focus:outline-none"
                     >
-                      &#x2022;&#x2022;&#x2022; {/* Three dots */}
+                      ⋮
                     </button>
-                    <div
-                      ref={(el) => {
-                        if (el) {
-                          dropdownRefs.current[site.siteID] = el;
-                        } else {
-                          delete dropdownRefs.current[site.siteID];
-                        }
-                      }}
-                      className={`absolute right-0 w-48 bg-white border border-gray-200 rounded shadow-lg ${
-                        dropdownOpen[site.siteID] ? "block" : "hidden"
-                      } z-10`}
-                      style={{
-                        top: "100%", // Position it directly below the button
-                        marginTop: "0.25rem", // Add a small gap from the button
-                      }}
-                    >
-                      <button
-                        onClick={() => handleDelete(site.siteID)}
-                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
-                      >
-                        Delete
-                      </button>
-                    </div>
+                    {/* Dropdown Menu */}
+                    {dropdownOpen[site.siteID] && (
+                      <div className="absolute right-0 mt-1 w-48 bg-white border border-gray-200 rounded shadow-lg z-10">
+                        {/* <button
+                          onClick={() => {
+                            handleEdit(site);
+                            setDropdownOpen((prev) => ({
+                              ...prev,
+                              [site.siteID]: false,
+                            }));
+                          }}
+                          className="block px-4 py-2 text-gray-800 hover:bg-gray-100 w-full text-left"
+                        >
+                          Edit
+                        </button> */}
+                        <button
+                          onClick={() => {
+                            handleDelete(site.siteID);
+                            setDropdownOpen((prev) => ({
+                              ...prev,
+                              [site.siteID]: false,
+                            }));
+                          }}
+                          className="block px-4 py-2 text-red-600 hover:bg-gray-100 w-full text-left"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))

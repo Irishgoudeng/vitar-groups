@@ -237,12 +237,50 @@ const EquipmentPage: React.FC = () => {
                   <td className="px-6 py-4">{equipment.rangeMax}</td>
                   <td className="px-6 py-4">{equipment.traceability}</td>
                   <td className="px-6 py-4">
-                    <button
-                      onClick={() => handleDelete(equipment.equipmentID)}
-                      className="text-red-500 hover:text-red-600"
-                    >
-                      Delete
-                    </button>
+                    <td className="px-6 py-4 ">
+                      {/* Three-dot menu button */}
+                      <button
+                        onClick={() =>
+                          setDropdownOpen((prev) => ({
+                            ...prev,
+                            [equipment.equipmentID]:
+                              !prev[equipment.equipmentID],
+                          }))
+                        }
+                        className="text-gray-600 hover:text-gray-800 focus:outline-none"
+                      >
+                        ⋮
+                      </button>
+                      {/* Dropdown Menu */}
+                      {dropdownOpen[equipment.equipmentID] && (
+                        <div className="absolute right-0 mt-1 w-48 bg-white border border-gray-200 rounded shadow-lg z-10">
+                          {/* <button
+                            onClick={() => {
+                              handleEdit(equipment);
+                              setDropdownOpen((prev) => ({
+                                ...prev,
+                                [equipment.equipmentID]: false,
+                              }));
+                            }}
+                            className="block px-4 py-2 text-gray-800 hover:bg-gray-100 w-full text-left"
+                          >
+                            Edit
+                          </button> */}
+                          <button
+                            onClick={() => {
+                              handleDelete(equipment.equipmentID);
+                              setDropdownOpen((prev) => ({
+                                ...prev,
+                                [equipment.equipmentID]: false,
+                              }));
+                            }}
+                            className="block px-4 py-2 text-red-600 hover:bg-gray-100 w-full text-left"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                    </td>
                   </td>
                 </tr>
               ))

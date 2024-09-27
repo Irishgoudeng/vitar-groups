@@ -94,13 +94,6 @@ const CustomersPage: React.FC = () => {
     );
   };
 
-  const toggleDropdown = (customerId: string) => {
-    setDropdownOpen((prev) => ({
-      ...prev,
-      [customerId]: !prev[customerId],
-    }));
-  };
-
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -180,7 +173,7 @@ const CustomersPage: React.FC = () => {
       </div>
 
       {/* Table for larger screens */}
-      <div className="hidden lg:block overflow-x-auto">
+      <div className="hidden lg:block overflow-x-auto h-screen">
         <table className="w-full text-sm text-left text-gray-600 bg-white border border-gray-200 rounded-lg shadow-md">
           <thead className="text-xs text-gray-700 uppercase bg-gray-100">
             <tr>
@@ -213,42 +206,48 @@ const CustomersPage: React.FC = () => {
                   <td className="px-6 py-4 text-gray-600">
                     {customer.address}
                   </td>
-                  <td className="px-6 py-4 relative">
+                  <td className="px-6 py-4 absolute">
+                    {/* Three-dot menu button */}
                     <button
-                      className="text-gray-500 hover:underline"
-                      onClick={() => toggleDropdown(customer.id)}
+                      onClick={() =>
+                        setDropdownOpen((prev) => ({
+                          ...prev,
+                          [customer.name]: !prev[customer.name],
+                        }))
+                      }
+                      className="text-gray-600 hover:text-gray-800 focus:outline-none"
                     >
-                      &#x2022;&#x2022;&#x2022; {/* Three dots */}
+                      ⋮
                     </button>
-                    <div
-                      ref={(el) => {
-                        if (el) {
-                          dropdownRefs.current[customer.id] = el;
-                        } else {
-                          delete dropdownRefs.current[customer.id];
-                        }
-                      }}
-                      className={`absolute right-0 w-48 bg-white border border-gray-200 rounded shadow-lg ${
-                        dropdownOpen[customer.id] ? "block" : "hidden"
-                      } z-10`}
-                      style={{
-                        top: "100%", // Position it directly below the button
-                        marginTop: "0.25rem", // Add a small gap from the button
-                      }}
-                    >
-                      <button
-                        onClick={() => handleEdit(customer.id)}
-                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(customer.id)}
-                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
-                      >
-                        Delete
-                      </button>
-                    </div>
+                    {/* Dropdown Menu */}
+                    {dropdownOpen[customer.name] && (
+                      <div className="absolute right-0 mt-1 w-48 bg-white border border-gray-200 rounded shadow-lg z-10">
+                        {/* <button
+                          onClick={() => {
+                            handleEdit(site);
+                            setDropdownOpen((prev) => ({
+                              ...prev,
+                              [site.siteID]: false,
+                            }));
+                          }}
+                          className="block px-4 py-2 text-gray-800 hover:bg-gray-100 w-full text-left"
+                        >
+                          Edit
+                        </button> */}
+                        <button
+                          onClick={() => {
+                            handleDelete(customer.name);
+                            setDropdownOpen((prev) => ({
+                              ...prev,
+                              [customer.name]: false,
+                            }));
+                          }}
+                          className="block px-4 py-2 text-red-600 hover:bg-gray-100 w-full text-left"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))

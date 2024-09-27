@@ -4,21 +4,22 @@ import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { SpecificEquipment } from "@/app/types/SpecificEquipment";
 import AddSpecificEquipmentModal from "@/app/components/Equipment/AddSpecificEquipmentModal";
+import EditSpecificEquipmentModal from "@/app/components/Equipment/EditSpecificEquipmentModal";
 
 // Initial list of equipment data
 const initialSpecificEquipments: SpecificEquipment[] = [
   {
     id: "1",
     scope: "Volumetric",
-    description: "Digital Thermometer + Pt100",
-    tagID: "ST-TM1",
-    make: "DOSTMANN",
-    model: "T 900 SERIES",
-    serialNumber: "95511090256",
+    description: "Temperature Block Calibrator",
+    tagID: "ST-DB1",
+    make: "ISOTECH",
+    model: "GEMINI 4857/550 BASIC",
+    serialNumber: "40169/1",
     type: "-",
-    range: "-",
-    certificateNo: "ST - TM1 - 23 10",
-    traceability: "NMIM",
+    range: "50 °C ~ 500 °C",
+    certificateNo: "-",
+    traceability: "-",
   },
   // Add more equipment items as needed
 ];
@@ -33,8 +34,25 @@ const SpecificEquipmentPage: React.FC = () => {
     {}
   );
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+
   const router = useRouter();
   const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const [selectedEquipment, setSelectedEquipment] =
+    useState<SpecificEquipment | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Modal state
+  const handleEdit = (equipment: SpecificEquipment) => {
+    setSelectedEquipment(equipment);
+    setIsEditModalOpen(true);
+  };
+  const handleUpdateEquipment = (updatedEquipment: SpecificEquipment) => {
+    setEquipments((prev) =>
+      prev.map((equipment) =>
+        equipment.tagID === updatedEquipment.tagID
+          ? updatedEquipment
+          : equipment
+      )
+    );
+  };
 
   const handleDelete = (tagID: string) => {
     const confirmDelete = confirm(
@@ -47,7 +65,7 @@ const SpecificEquipmentPage: React.FC = () => {
         )
       );
       console.log(`Equipment with ID ${tagID} deleted`);
-      router.push(`/dashboard/equipment/temperature`);
+      router.push(`/dashboard/equipment/volumetric`);
     }
   };
 
@@ -78,13 +96,6 @@ const SpecificEquipmentPage: React.FC = () => {
         .includes(selectedFilter.toLowerCase());
     return matchesSearch && matchesFilter;
   });
-
-  // const toggleDropdown = (equipmentId: string) => {
-  //   setDropdownOpen((prev) => ({
-  //     ...prev,
-  //     [equipmentId]: !prev[equipmentId],
-  //   }));
-  // };
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -139,44 +150,8 @@ const SpecificEquipmentPage: React.FC = () => {
         </button>
       </div>
 
-      {/* Equipment List as Cards for smaller screens */}
-      <div className="block lg:hidden text-black">
-        {filteredEquipments.length > 0 ? (
-          filteredEquipments.map((specificequipments) => (
-            <div
-              key={specificequipments.tagID}
-              className="border rounded-lg p-4 mb-4 bg-white shadow"
-            >
-              <h2 className="text-xl font-semibold">
-                {specificequipments.description}
-              </h2>
-              <p className="text-gray-600">
-                Type of Scope: {specificequipments.scope}
-              </p>
-              <p className="text-gray-600">
-                Description: {specificequipments.description}
-              </p>
-              <p className="text-gray-600">Model: {specificequipments.model}</p>
-              <p className="text-gray-600">
-                Serial Number: {specificequipments.serialNumber}
-              </p>
-              <div className="mt-2">
-                <button
-                  onClick={() => handleDelete(specificequipments.tagID)}
-                  className="w-full px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="text-center text-gray-500">No equipment found</div>
-        )}
-      </div>
-
       {/* Table for larger screens */}
-      <div className="hidden lg:block overflow-x-auto">
+      <div className="hidden lg:block overflow-x-auto h-screen">
         <table className="w-full text-sm text-left text-gray-600 bg-white border border-gray-200 rounded-lg shadow-md">
           <thead className="text-xs text-gray-700 uppercase bg-gray-100">
             <tr>
@@ -188,12 +163,6 @@ const SpecificEquipmentPage: React.FC = () => {
               </th>
               <th scope="col" className="px-6 py-3">
                 Type of Scope
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Description
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Tag ID
               </th>
               <th scope="col" className="px-6 py-3">
                 Model
@@ -223,17 +192,13 @@ const SpecificEquipmentPage: React.FC = () => {
               filteredEquipments.map((specificequipments) => (
                 <tr
                   key={specificequipments.tagID}
-                  className="border-b border-gray-200"
+                  className="border-b border-gray-200 relative"
                 >
                   <td className="px-6 py-4">
                     {specificequipments.description}
                   </td>
                   <td className="px-6 py-4">{specificequipments.tagID}</td>
                   <td className="px-6 py-4">{specificequipments.scope}</td>
-                  <td className="px-6 py-4">
-                    {specificequipments.description}
-                  </td>
-                  <td className="px-6 py-4">{specificequipments.tagID}</td>
                   <td className="px-6 py-4">{specificequipments.model}</td>
                   <td className="px-6 py-4">
                     {specificequipments.serialNumber}
@@ -246,19 +211,55 @@ const SpecificEquipmentPage: React.FC = () => {
                   <td className="px-6 py-4">
                     {specificequipments.traceability}
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 absolute">
+                    {/* Three-dot menu button */}
                     <button
-                      onClick={() => handleDelete(specificequipments.tagID)}
-                      className="text-red-500 hover:text-red-600"
+                      onClick={() =>
+                        setDropdownOpen((prev) => ({
+                          ...prev,
+                          [specificequipments.tagID]:
+                            !prev[specificequipments.tagID],
+                        }))
+                      }
+                      className="text-gray-600 hover:text-gray-800 focus:outline-none"
                     >
-                      Delete
+                      ⋮
                     </button>
+                    {/* Dropdown Menu */}
+                    {dropdownOpen[specificequipments.tagID] && (
+                      <div className="absolute right-0 mt-1 w-48 bg-white border border-gray-200 rounded shadow-lg z-10">
+                        <button
+                          onClick={() => {
+                            handleEdit(specificequipments);
+                            setDropdownOpen((prev) => ({
+                              ...prev,
+                              [specificequipments.tagID]: false,
+                            }));
+                          }}
+                          className="block px-4 py-2 text-gray-800 hover:bg-gray-100 w-full text-left"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => {
+                            handleDelete(specificequipments.tagID);
+                            setDropdownOpen((prev) => ({
+                              ...prev,
+                              [specificequipments.tagID]: false,
+                            }));
+                          }}
+                          className="block px-4 py-2 text-red-600 hover:bg-gray-100 w-full text-left"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={13} className="text-center py-4 text-gray-500">
+                <td colSpan={10} className="text-center py-4 text-gray-500">
                   No equipment found
                 </td>
               </tr>
@@ -272,6 +273,13 @@ const SpecificEquipmentPage: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onAddEquipment={handleAddEquipment}
+        scopeLabel="Volumetric"
+      />
+      <EditSpecificEquipmentModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onUpdateEquipment={handleUpdateEquipment}
+        equipment={selectedEquipment}
         scopeLabel="Volumetric"
       />
     </div>

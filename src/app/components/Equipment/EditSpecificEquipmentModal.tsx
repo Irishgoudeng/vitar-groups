@@ -1,24 +1,27 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InputField from "@/app/components/common/InputField";
 import Button from "@/app/components/common/Button";
 import { SpecificEquipment } from "@/app/types/SpecificEquipment";
 import DisabledField from "../common/DisabledField";
 
-interface AddSpecificEquipmentModalProps {
+interface EditSpecificEquipmentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddEquipment: (equipment: SpecificEquipment) => void; // Use SpecificEquipment type
+  onUpdateEquipment: (equipment: SpecificEquipment) => void; // Use SpecificEquipment type
+  equipment: SpecificEquipment | null; // Equipment to be edited
   scopeLabel: string; // New prop to set the scope label
 }
 
-const AddSpecificEquipmentModal: React.FC<AddSpecificEquipmentModalProps> = ({
+const EditSpecificEquipmentModal: React.FC<EditSpecificEquipmentModalProps> = ({
   isOpen,
   onClose,
-  onAddEquipment,
-  scopeLabel, // Destructure the new prop
+  onUpdateEquipment,
+  equipment, // New prop to accept the equipment for editing
+  scopeLabel,
 }) => {
+  // Initialize state with equipment details if available
   const [description, setDescription] = useState("");
   const [tagID, setTagID] = useState("");
   const [make, setMake] = useState("");
@@ -29,11 +32,27 @@ const AddSpecificEquipmentModal: React.FC<AddSpecificEquipmentModalProps> = ({
   const [certificateNo, setCertificateNo] = useState("");
   const [traceability, setTraceability] = useState("");
 
+  // Effect to populate fields when equipment prop changes
+  useEffect(() => {
+    if (equipment) {
+      setDescription(equipment.description);
+      setTagID(equipment.tagID);
+      setMake(equipment.make);
+      setModel(equipment.model);
+      setSerialNumber(equipment.serialNumber);
+      setType(equipment.type);
+      setRange(equipment.range);
+      setCertificateNo(equipment.certificateNo);
+      setTraceability(equipment.traceability);
+    }
+  }, [equipment]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Since id is auto-incremented, we omit it here
-    const newEquipment: Omit<SpecificEquipment, "id"> = {
+    // Construct the updated equipment object
+    const updatedEquipment: SpecificEquipment = {
+      id: equipment?.id || "", // Keep the existing ID
       description,
       scope: scopeLabel, // Use the passed scope label
       tagID,
@@ -46,11 +65,11 @@ const AddSpecificEquipmentModal: React.FC<AddSpecificEquipmentModalProps> = ({
       traceability,
     };
 
-    onAddEquipment(newEquipment as SpecificEquipment);
-    onClose(); // Close modal after adding
+    onUpdateEquipment(updatedEquipment); // Call the update function
+    onClose(); // Close modal after updating
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !equipment) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 transition-opacity duration-300 ease-in-out">
@@ -63,7 +82,7 @@ const AddSpecificEquipmentModal: React.FC<AddSpecificEquipmentModalProps> = ({
           &times;
         </button>
         <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">
-          Add {scopeLabel} Equipment
+          Edit {scopeLabel} Equipment
         </h2>
         <form className="grid grid-cols-2 gap-2" onSubmit={handleSubmit}>
           <InputField
@@ -76,7 +95,7 @@ const AddSpecificEquipmentModal: React.FC<AddSpecificEquipmentModalProps> = ({
           <DisabledField
             id="scope"
             label="Scope" // Use scopeLabel for the scope input
-            placeholder={scopeLabel}
+            placeholder={`Will depend on ${scopeLabel}`}
             value={scopeLabel} // Set the value to scopeLabel
 
             // Disable the field if it's static
@@ -139,7 +158,7 @@ const AddSpecificEquipmentModal: React.FC<AddSpecificEquipmentModalProps> = ({
           />
           <div></div>
           <div className="flex items-end justify-end">
-            <Button label="Submit" type="submit" />
+            <Button label="Update" type="submit" />
           </div>
         </form>
       </div>
@@ -147,4 +166,4 @@ const AddSpecificEquipmentModal: React.FC<AddSpecificEquipmentModalProps> = ({
   );
 };
 
-export default AddSpecificEquipmentModal;
+export default EditSpecificEquipmentModal;
